@@ -1,4 +1,4 @@
-namespace NTT_DMS.WebUI.Models
+namespace NttDocumentManagement.Models
 {
     public class ErrorViewModel
     {

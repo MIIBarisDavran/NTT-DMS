@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using NTT_DMS.WebUI.Models;
+using NttDocumentManagement.Models;
 using System.Diagnostics;
 
-namespace NTT_DMS.WebUI.Controllers
+namespace NttDocumentManagement.Controllers
 {
     public class HomeController : Controller
     {
@@ -16,6 +16,10 @@ namespace NTT_DMS.WebUI.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        public IActionResult Documents()
+        {
+            return RedirectToAction("Index", "Documents");
         }
 
         public IActionResult Privacy()
