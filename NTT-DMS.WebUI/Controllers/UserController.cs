@@ -4,8 +4,9 @@ using NTT_DMS.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NTT_DMS.WebUI.Controllers
+namespace NTT_DMS.Controllers
 {
+    [Authorize(Policy = "Admin")]
     public class UserController : Controller
     {
         private readonly UserService _userService;

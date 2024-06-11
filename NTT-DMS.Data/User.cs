@@ -13,13 +13,14 @@ namespace NTT_DMS.Data
     {
         public User()
         {
-            this.Catgories = new HashSet<Category>();
+            this.Categories = new HashSet<Category>();
             this.Documents = new HashSet<Document>();
         }
         public static ClaimsIdentity Identity { get; set; }
         [Key]
         public int UserId { get; set; }
         [Required]
+        [EmailAddress]
         public string UserEmail { get; set; }
         [Required]
         public string UserName { get; set; }
@@ -27,7 +28,7 @@ namespace NTT_DMS.Data
         public string password { get; set; }
         [Required]
         public string UserRole { get; set; }
-        public virtual ICollection<Category> Catgories { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
     }
 }

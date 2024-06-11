@@ -68,6 +68,7 @@ namespace NTT_DMS.WebUI
                 {
                     policy.RequireClaim(ClaimTypes.Role, "User");
                 });
+
             });
 
 

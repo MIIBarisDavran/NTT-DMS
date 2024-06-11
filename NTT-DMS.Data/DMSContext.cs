@@ -13,6 +13,27 @@ namespace NTT_DMS.Data
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Categories)
+                .WithOne(c => c.Users)
+                .HasForeignKey(c => c.UsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Documents)
+                .WithOne(d => d.User)
+                .HasForeignKey(d => d.CatUsersUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Documents)
+                .WithOne(d => d.Category)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
         public DMSContext(DbContextOptions<DMSContext> options) : base(options)
         {
 

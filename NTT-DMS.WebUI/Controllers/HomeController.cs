@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using NttDocumentManagement.Models;
+using NTT_DMS.Models;
 using System.Diagnostics;
 
-namespace NttDocumentManagement.Controllers
+namespace NTT_DMS.Controllers
 {
     public class HomeController : Controller
     {

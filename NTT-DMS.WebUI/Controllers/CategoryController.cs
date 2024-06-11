@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NTT_DMS.Data;
 using NTT_DMS.Service;
 
-namespace NTT_DMS.WebUI.Controllers
+namespace NTT_DMS.Controllers
 {
     [Authorize(Roles = "Admin,User")]
     public class CategoryController : Controller
@@ -47,7 +47,7 @@ namespace NTT_DMS.WebUI.Controllers
             }
             else
             {
-                ViewBag.error = "Something was wrong.";
+                ViewBag.error = "Something went wrong.";
             }
             return View();
         }

@@ -20,7 +20,7 @@ namespace NTT_DMS.Data
     {
         var filestream = new MemoryStream();
         await file.CopyToAsync(filestream);
-        filestream.Position = 0; // Reset the position to the beginning of the stream
+        filestream.Position = 0;
         return filestream;
     }
 

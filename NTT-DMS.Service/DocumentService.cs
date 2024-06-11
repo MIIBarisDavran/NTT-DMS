@@ -35,10 +35,10 @@ namespace NTT_DMS.Service
         {
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             var doc = from x in _context.Documents
-                      where x.UsersUserId == user.UserId
+                      where x.CatUsersUserId == user.UserId
                       select x;
             var items = from x in _context.Documents
-                        where x.UsersUserId == user.UserId
+                        where x.CatUsersUserId == user.UserId
                         select new DocumentViewModel
                         {
                             DocumentId = x.DocumentId,
@@ -103,7 +103,7 @@ namespace NTT_DMS.Service
                         item.DocumentName = "uid-" + user.UserId + file.FileName;
                         item.DocumentTags = file.FileName;//default tags given same as filename will be replaced later
                         item.CategoryId = document.CategoryId;
-                        item.UsersUserId = user.UserId;
+                        item.CatUsersUserId = user.UserId;
                         _context.Add(item);
                         _context.SaveChanges();
                         file.CopyTo(stream);
@@ -132,7 +132,7 @@ namespace NTT_DMS.Service
          */
         public string GetPath(int userId, int documentId)
         {
-            var item = _context.Documents.Where(x => x.DocumentId == documentId && x.Users.UserId == userId).FirstOrDefault();
+            var item = _context.Documents.Where(x => x.DocumentId == documentId && x.User.UserId == userId).FirstOrDefault();
             return item.DocumentPath;
         }
 
@@ -141,7 +141,7 @@ namespace NTT_DMS.Service
          */
         public string GetName(int userId, int documentId)
         {
-            var item = _context.Documents.Where(x => x.DocumentId == documentId && x.Users.UserId == userId).FirstOrDefault();
+            var item = _context.Documents.Where(x => x.DocumentId == documentId && x.User.UserId == userId).FirstOrDefault();
             return item.DocumentName;
         }
 
@@ -193,7 +193,7 @@ namespace NTT_DMS.Service
         public bool DocumentPermissionRule(int userId, int documentId)
         {
             var response = false;
-            var itemCount = _context.Documents.Where(x => x.DocumentId == documentId && x.Users.UserId == userId).Count();
+            var itemCount = _context.Documents.Where(x => x.DocumentId == documentId && x.User.UserId == userId).Count();
             if (itemCount == 1)
             {
                 response = true;

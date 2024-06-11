@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using NttDocumentManagement.Models;
+using NTT_DMS.Models;
 using NTT_DMS.Data;
 using NTT_DMS.Service;
 
-namespace DMS.Controllers
+namespace NTT_DMS.Controllers
 {
     /*
      * AUTH CONTROLLER MAIN CLASS
