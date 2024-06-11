@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using NttDocumentManagement.Models;
+using NTT_DMS.Data;
+using NTT_DMS.Service;
 
 namespace DMS.Controllers
 {
@@ -17,6 +19,13 @@ namespace DMS.Controllers
      */
     public class AuthController : Controller
     {
+        private readonly AuthService _authService;
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(AuthService authService, ILogger<AuthController> logger)
+        {
+            _authService = authService;
+            _logger = logger;
+        }
         /*
          * SHOW LOGIN FORM
          */
@@ -29,19 +38,58 @@ namespace DMS.Controllers
          * USER LOGIN
          */
         [HttpPost]
-        public IActionResult Login()
+        public IActionResult Login(UserLogin user)
         {
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                var _user = _authService.CheckCredential(user);
+                if (_user == null)
+                {
+                    TempData["error"] = "Credentials do not match.";
+                    return RedirectToAction("Index", "Auth");
+                }
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                identity.AddClaim(new Claim(ClaimTypes.Name, _user[0].UserName.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.Role, _user[0].UserRole));
+                identity.AddClaim(new Claim(ClaimTypes.Email, _user[0].UserEmail));
+                HttpContext.Session.SetString("UserEmail", _user[0].UserEmail);
+                HttpContext.Session.SetInt32("UserId", _user[0].UserId);
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+                if (_user[0].UserRole == "Admin")
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (_user[0].UserRole == "User")
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, "User"));
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            TempData["error"] = "Credentials do not match.";
+            return RedirectToAction("Index", "Auth");
         }
         /*
          * LOGOUT
          */
         [HttpGet]
-        public IActionResult LogOut()
+        public async Task<IActionResult> LogOut()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Auth");
+            try
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                HttpContext.Session.Clear();
+                _logger.LogInformation("User logged out.");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during logout");
+                TempData["error"] = "An error occurred while logging out.";
+                return RedirectToAction("Index");
+            }
         }
         public IActionResult Forbidden()
         {
@@ -54,7 +102,9 @@ namespace DMS.Controllers
          */
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            _logger.LogError($"Request ID: {requestId}");
+            return View(new ErrorViewModel { RequestId = requestId });
         }
     }
 }

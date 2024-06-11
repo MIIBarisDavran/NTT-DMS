@@ -39,14 +39,15 @@ namespace NTT_DMS.WebUI
 
             services.AddDbContext<DMSContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NttDmsDb"), sqlServerOptions =>
-    {
-        sqlServerOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null);
-    }));
+            {
+                sqlServerOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+            }));
 
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromDays(30);
 
             });
@@ -56,7 +57,8 @@ namespace NTT_DMS.WebUI
 
             services.AddMvc();
             services.AddPaging();
-            services.AddAuthorization(options => {
+            services.AddAuthorization(options =>
+            {
 
                 options.AddPolicy("Admin", policy =>
                 {
