@@ -24,7 +24,7 @@ namespace NTT_DMS.Data
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Documents)
                 .WithOne(d => d.User)
-                .HasForeignKey(d => d.CatUsersUserId)
+                .HasForeignKey(d => d.UsersUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Category>()

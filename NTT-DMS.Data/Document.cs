@@ -21,7 +21,7 @@ namespace NTT_DMS.Data
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         [ForeignKey("User")]
-        public int CatUsersUserId { get; set; }
+        public int UsersUserId { get; set; }
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }
 

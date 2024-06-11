@@ -35,10 +35,10 @@ namespace NTT_DMS.Service
         {
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             var doc = from x in _context.Documents
-                      where x.CatUsersUserId == user.UserId
+                      where x.UsersUserId == user.UserId
                       select x;
             var items = from x in _context.Documents
-                        where x.CatUsersUserId == user.UserId
+                        where x.UsersUserId == user.UserId
                         select new DocumentViewModel
                         {
                             DocumentId = x.DocumentId,
@@ -103,7 +103,7 @@ namespace NTT_DMS.Service
                         item.DocumentName = "uid-" + user.UserId + file.FileName;
                         item.DocumentTags = file.FileName;//default tags given same as filename will be replaced later
                         item.CategoryId = document.CategoryId;
-                        item.CatUsersUserId = user.UserId;
+                        item.UsersUserId = user.UserId;
                         _context.Add(item);
                         _context.SaveChanges();
                         file.CopyTo(stream);
