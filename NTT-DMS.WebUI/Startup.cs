@@ -57,6 +57,7 @@ namespace NTT_DMS.WebUI
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
             services.AddScoped<AuthService>();
+            services.AddScoped<DocumentService>();
             services.AddMvc();
             services.AddPaging();
             services.AddAuthorization(options =>

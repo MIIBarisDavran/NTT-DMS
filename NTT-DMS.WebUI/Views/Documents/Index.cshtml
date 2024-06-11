@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PaginatedList<NTT_DMS.Data.DocumentViewModel>
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -50,7 +51,7 @@
         </tr>
     </thead>
     <tbody>
-        @* @foreach (var item in Model)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -67,22 +68,22 @@
                     <a href="/Document/DownloadAsync/@item.DocumentId" class="btn btn-info">Download</a>
                 </td>
             </tr>
-        } *@
+        }
     </tbody>
 </table>
 
-@*  @{
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    } *@
+}
 
 <a asp-action="Index"
-   asp-route-page=""
-   class="btn btn-default ">
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
     Previous
 </a>
 <a asp-action="Index"
-   asp-route-page=""
-   class="btn btn-default">
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
     Next
-</a> 
+</a>
