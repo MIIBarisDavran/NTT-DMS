@@ -38,6 +38,9 @@
     <thead>
         <tr>
             <th>
+
+            </th>
+            <th>
                 Id
             </th>
             <th>
@@ -55,6 +58,9 @@
         {
             <tr>
                 <td>
+                    <input type="checkbox" value="@(item.DocumentId)" />
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.DocumentId)
                 </td>
                 <td>
@@ -65,7 +71,7 @@
                     @Html.DisplayFor(modelItem => item.CategoryName)
                 </td>
                 <td>
-                    <a href="/Document/DownloadAsync/@item.DocumentId" class="btn btn-info">Download</a>
+                    <a href="@Url.Action("DownloadAsync", "Document", new { documentId = item.DocumentId })" class="btn btn-info">Download</a>
                 </td>
             </tr>
         }

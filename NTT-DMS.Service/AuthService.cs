@@ -36,5 +36,31 @@ namespace NTT_DMS.Service
                 UserRole = x.UserRole
             }).ToList();
         }
+
+
+        /*
+         * SIGN UP
+         */
+        public bool Signup(User user)
+        {
+            bool status;
+            User item = new User();
+            item.UserName = user.UserName;
+            item.UserEmail = user.UserEmail;
+            item.password = user.password;
+            item.UserRole = "User";
+            try
+            {
+                _context.Users.Add(item);
+                _context.SaveChanges();
+                status = true;
+            }
+            catch (Exception ex)
+            {
+                var exp = ex;
+                status = false;
+            }
+            return status;
+        }
     }
 }

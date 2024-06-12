@@ -58,6 +58,8 @@ namespace NTT_DMS.WebUI
 
             services.AddScoped<AuthService>();
             services.AddScoped<DocumentService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<CategoryService>();
             services.AddMvc();
             services.AddPaging();
             services.AddAuthorization(options =>

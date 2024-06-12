@@ -53,9 +53,9 @@ namespace NTT_DMS.Service
             return status;
         }
 
-       /*
-        * DELETE USER
-        */
+        /*
+         * DELETE USER
+         */
         public bool Delete(int id)
         {
             bool status;

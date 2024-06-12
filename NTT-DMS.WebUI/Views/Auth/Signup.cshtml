@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>DMS | Log in</title>
+    <title>NTT-DMS SignUp</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="~/images/logo.png" type="image/gif" sizes="16x16">
@@ -34,30 +34,23 @@
                 <p class="login-box-msg"> <img src="~/images/logo.png" style="height:30px;width:30px;" />Document Management System</p>
                 <p class="login-box-msg" style="color:red;">@TempData["error"]</p>
 
-                <form action="/Auth/Login" method="post">
+                <form action="/Auth/Signup" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="UserEmail" placeholder=" Email">
+                        <input type="text" class="form-control" name="UserEmail" placeholder="Email">
+
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" name="Name" placeholder="Name">
 
                     </div>
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" name="password" placeholder="Password">
 
                     </div>
-                    <div style="margin-bottom:0.3rem;color:black;">
-                        <a href="~/Auth/Signup" class="">Sign up</a>
-                    </div>
                     <div class="row">
-                        <div class="col-8">
-                            <div class="checkbox icheck">
-                                <label>
-                                    <input type="checkbox"> Remember Me
-                                </label>
-                            </div>
-                        </div>
-
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
                         </div>
                         <!-- /.col -->
                     </div>

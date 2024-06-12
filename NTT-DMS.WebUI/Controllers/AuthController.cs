@@ -21,6 +21,7 @@ namespace NTT_DMS.Controllers
     {
         private readonly AuthService _authService;
         private readonly ILogger<AuthController> _logger;
+
         public AuthController(AuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
@@ -91,6 +92,25 @@ namespace NTT_DMS.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        /*
+         * SIGN UP
+         */
+        [HttpPost]
+        public IActionResult Signup(User user)
+        {
+            var status = _authService.Signup(user);
+            if (status)
+            {
+                ViewBag.success = "User created successfully";
+            }
+            else
+            {
+                ViewBag.error = "Error Occurred";
+            }
+            return RedirectToAction("Auth", "Index");
+        }
+
         public IActionResult Forbidden()
         {
             TempData["error"] = "Permissin Denied!";

@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Logging;
 
 namespace NTT_DMS.Service
 {
@@ -16,16 +18,15 @@ namespace NTT_DMS.Service
     {
         private readonly DMSContext _context;
         private readonly IHostingEnvironment _appEnvironment;
+        private readonly ILogger<DocumentService> _logger;
 
-        public DocumentService(DMSContext db)
-        {
-            _context = db;
-        }
 
-        public DocumentService(DMSContext db, IHostingEnvironment appEnvironment)
+        public DocumentService(DMSContext db, IHostingEnvironment appEnvironment, ILogger<DocumentService> logger)
         {
             _context = db;
             _appEnvironment = appEnvironment;
+            _logger = logger;
+
         }
 
         /*
@@ -74,7 +75,8 @@ namespace NTT_DMS.Service
             };
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             string pathRoot = path;
-            string filePath = "\\Documents\\uid-" + user.UserId + file.GetFilename();
+            string filePath = "\\Documents\\" + file.GetFilename();
+            //CreateDirectory(user.UserId);
             string extention = Path.GetExtension(file.FileName);
             var validateExtResponse = this.ValidateExtention(file);
             var validateFileSizeResponse = this.ValidateExtention(file);
@@ -100,8 +102,8 @@ namespace NTT_DMS.Service
                     {
                         Document item = new Document();
                         item.DocumentPath = filePath;
-                        item.DocumentName = "uid-" + user.UserId + file.FileName;
-                        item.DocumentTags = file.FileName;//default tags given same as filename will be replaced later
+                        item.DocumentName = file.FileName;
+                        item.DocumentTags = file.FileName;
                         item.CategoryId = document.CategoryId;
                         item.UsersUserId = user.UserId;
                         _context.Add(item);
@@ -132,8 +134,30 @@ namespace NTT_DMS.Service
          */
         public string GetPath(int userId, int documentId)
         {
-            var item = _context.Documents.Where(x => x.DocumentId == documentId && x.User.UserId == userId).FirstOrDefault();
+            var item = _context.Documents.Where(
+                x => x.DocumentId == documentId && x.User.UserId == userId
+                ).FirstOrDefault();
             return item.DocumentPath;
+        }
+
+        public bool CreateDirectory(int userId)
+        {
+            try
+            {
+                string searchPath = "\\Documents\\" + userId;
+                var absolutePath = Path.Combine(_appEnvironment.WebRootPath, searchPath);
+                bool exists = Directory.Exists(absolutePath);
+                if (!exists)
+                {
+                    Directory.CreateDirectory(searchPath);
+                }
+                return exists;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating new directory");
+                throw;
+            }
         }
 
         /* 
