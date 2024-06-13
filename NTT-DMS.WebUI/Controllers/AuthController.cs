@@ -96,7 +96,6 @@ namespace NTT_DMS.Controllers
         /*
          * SIGN UP
          */
-        [HttpPost]
         public IActionResult Signup(User user)
         {
             var status = _authService.Signup(user);

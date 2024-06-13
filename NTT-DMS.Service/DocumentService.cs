@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -126,6 +127,22 @@ namespace NTT_DMS.Service
 
             }
             return response;
+        }
+
+        [HttpPost]
+        public bool Delete(int[] documentIds)
+        {
+            try
+            {
+                var documents = _context.Documents.Where(d => documentIds.Contains(d.DocumentId)).ToList();
+                _context.Documents.RemoveRange(documents);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
 

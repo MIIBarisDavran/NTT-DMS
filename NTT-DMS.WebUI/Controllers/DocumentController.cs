@@ -126,6 +126,27 @@ namespace NTT_DMS.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [HttpPost]
+        public IActionResult Delete(int[] deleteDocumentIds)
+        {
+            if (deleteDocumentIds == null || deleteDocumentIds.Length == 0)
+            {
+                ViewBag.error = "No documents selected for deletion.";
+                return RedirectToAction("Index");
+            }
+            try
+            {
+                var status = _documentService.Delete(deleteDocumentIds);
+                ViewBag.success = "Selected documents were successfully deleted.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting documents");
+                ViewBag.error = "An error occurred while deleting the documents.";
+                return RedirectToAction("Index", "Document");
+            }
+        }
 
         /*
          * RETURN FILE

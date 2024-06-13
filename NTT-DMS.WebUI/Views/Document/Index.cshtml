@@ -35,12 +35,23 @@
     </div>
 }
 
-<form action="/Documents/Delete" method="post">
+<form action="/Document/Delete" method="post">
+    @if (!string.IsNullOrEmpty(ViewBag.success))
+    {
+        <div class="alert alert-success" role="alert">
+            <strong>Success!</strong> @ViewBag.success.
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="alert alert-warning" role="alert">
+            <strong>Failed!</strong> @ViewBag.error.
+        </div>
+    }
 <table class="table">
     <thead>
         <tr>
             <th>
-
             </th>
             <th>
                 Id
@@ -60,7 +71,7 @@
         {
             <tr>
                 <td>
-                    <input type="checkbox" value="@item.DocumentId" />
+                        <input type="checkbox" name="deleteDocumentIds" id="deleteDocumentIds" value="@item.DocumentId" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentId)
