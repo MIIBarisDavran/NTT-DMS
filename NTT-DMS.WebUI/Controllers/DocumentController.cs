@@ -95,38 +95,41 @@ namespace NTT_DMS.Controllers
         /*
          * DOWNLOAD DOCUMENT
          */
-        public async Task<IActionResult> DownloadAsync(int id)
-        {
-            try
-            {
-                var userId = HttpContext.Session.GetInt32("UserId");
-                if (userId == null)
-                {
-                    TempData["Error"] = "User not logged in";
-                    return RedirectToAction("Index");
-                }
+        //public async Task<IActionResult> DownloadAsync(int id)
+        //{
+        //    try
+        //    {
+        //        var userId = HttpContext.Session.GetInt32("UserId");
+        //        if (userId == null)
+        //        {
+        //            TempData["Error"] = "User not logged in";
+        //            return RedirectToAction("Index");
+        //        }
 
-                var status = _documentService.DocumentPermissionRule((int)userId, id);
-                if (status)
-                {
-                    string filePath = _documentService.GetPath((int)userId, id);
-                    string fileName = _documentService.GetName((int)userId, id);
-                    return await ReturnDocumentFileAsync(filePath, fileName);
-                }
-                else
-                {
-                    TempData["Error"] = "Document permission failed";
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error downloading document");
-                TempData["Error"] = "An error occurred while downloading the document.";
-                return RedirectToAction("Index");
-            }
-        }
+        //        var status = _documentService.DocumentPermissionRule((int)userId, id);
+        //        if (status)
+        //        {
+        //            string filePath = _documentService.GetPath((int)userId, id);
+        //            string fileName = _documentService.GetName((int)userId, id);
+        //            return await ReturnDocumentFileAsync(filePath, fileName);
+        //        }
+        //        else
+        //        {
+        //            TempData["Error"] = "Document permission failed";
+        //            return RedirectToAction("Index");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error downloading document");
+        //        TempData["Error"] = "An error occurred while downloading the document.";
+        //        return RedirectToAction("Index");
+        //    }
+        //}
 
+        /*
+         * DOWNLOAD DOCUMENT
+         */
         [HttpPost]
         public async Task<IActionResult> DownloadSelected(int[] documentIds)
         {
@@ -151,7 +154,6 @@ namespace NTT_DMS.Controllers
                     {
                         foreach (var documentId in documentIds)
                         {
-                                string filePath = _documentService.GetPath((int)userId, documentId);
                                 string fileName = _documentService.GetName((int)userId, documentId);
                                 var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", fileName);
 

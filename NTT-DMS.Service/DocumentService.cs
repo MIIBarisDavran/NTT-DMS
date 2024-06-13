@@ -138,10 +138,10 @@ namespace NTT_DMS.Service
                 string pathRoot = _appEnvironment.WebRootPath;
                 foreach (var item in documents)
                 {
-                    var checkPath = Path.Combine(pathRoot, item.DocumentPath);
-                    if (File.Exists(checkPath))
+                    var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", item.DocumentName);
+                    if (File.Exists(path))
                     {
-                        File.Delete(checkPath);
+                        File.Delete(path);
                     }
                     else
                     {
