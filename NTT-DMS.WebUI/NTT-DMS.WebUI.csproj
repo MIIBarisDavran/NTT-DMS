@@ -25,4 +25,8 @@
     <ProjectReference Include="..\NTT-DMS.Service\NTT-DMS.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Document\" />
+  </ItemGroup>
+
 </Project>

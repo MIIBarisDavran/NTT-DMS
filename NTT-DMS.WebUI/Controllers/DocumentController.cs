@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 namespace NTT_DMS.Controllers
 {
     [Authorize(Roles = "Admin,User")]
-    public class DocumentsController : Controller
+    public class DocumentController : Controller
     {
         private readonly IWebHostEnvironment _appEnvironment;
         private readonly DocumentService _documentService;
         private readonly CategoryService _categoryService;
-        private readonly ILogger<DocumentsController> _logger;
+        private readonly ILogger<DocumentController> _logger;
 
-        public DocumentsController(
+        public DocumentController(
             IWebHostEnvironment appEnvironment,
             DocumentService documentService,
             CategoryService categoryService,
-            ILogger<DocumentsController> logger)
+            ILogger<DocumentController> logger)
         {
             _appEnvironment = appEnvironment;
             _documentService = documentService;
@@ -94,6 +94,7 @@ namespace NTT_DMS.Controllers
         /*
          * DOWNLOAD DOCUMENT
          */
+        [HttpGet]
         public async Task<IActionResult> DownloadAsync(int id)
         {
             try

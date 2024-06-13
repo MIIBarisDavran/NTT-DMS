@@ -34,6 +34,8 @@
         <strong>Failed!</strong> @TempData["error"].
     </div>
 }
+
+<form action="/Documents/Delete" method="post">
 <table class="table">
     <thead>
         <tr>
@@ -58,7 +60,7 @@
         {
             <tr>
                 <td>
-                    <input type="checkbox" value="@(item.DocumentId)" />
+                    <input type="checkbox" value="@item.DocumentId" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentId)
@@ -71,13 +73,18 @@
                     @Html.DisplayFor(modelItem => item.CategoryName)
                 </td>
                 <td>
-                    <a href="@Url.Action("DownloadAsync", "Document", new { documentId = item.DocumentId })" class="btn btn-info">Download</a>
+                     <a href="@Url.Action("DownloadAsync", "Document", new { id = item.DocumentId })" class="btn btn-info">Download</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
+    <div class="modal-footer">
+        <p>
+            <button type="submit" class="btn btn-danger">Delete Selected</button>
+        </p>
+    </div>
+</form>
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
