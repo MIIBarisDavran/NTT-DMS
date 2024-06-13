@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace NTT_DMS.Controllers
 {
@@ -94,7 +95,6 @@ namespace NTT_DMS.Controllers
         /*
          * DOWNLOAD DOCUMENT
          */
-        [HttpGet]
         public async Task<IActionResult> DownloadAsync(int id)
         {
             try
@@ -126,26 +126,73 @@ namespace NTT_DMS.Controllers
                 return RedirectToAction("Index");
             }
         }
+
         [HttpPost]
-        public IActionResult Delete(int[] deleteDocumentIds)
+        public async Task<IActionResult> DownloadSelected(int[] documentIds)
         {
-            if (deleteDocumentIds == null || deleteDocumentIds.Length == 0)
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
-                ViewBag.error = "No documents selected for deletion.";
+                TempData["Error"] = "User not logged in";
                 return RedirectToAction("Index");
             }
+
+            if (documentIds == null || documentIds.Length == 0)
+            {
+                TempData["Error"] = "No documents selected for download.";
+                return RedirectToAction("Index");
+            }
+
             try
             {
-                var status = _documentService.Delete(deleteDocumentIds);
-                ViewBag.success = "Selected documents were successfully deleted.";
-                return RedirectToAction("Index");
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var documentId in documentIds)
+                        {
+                                string filePath = _documentService.GetPath((int)userId, documentId);
+                                string fileName = _documentService.GetName((int)userId, documentId);
+                                var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", fileName);
+
+                                var fileBytes = await System.IO.File.ReadAllBytesAsync(path);
+                                var zipEntry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
+
+                                using (var zipStream = zipEntry.Open())
+                                {
+                                    await zipStream.WriteAsync(fileBytes, 0, fileBytes.Length);
+                                }
+                        }
+                    }
+
+                    return File(memoryStream.ToArray(), "application/zip", "SelectedDocuments.zip");
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting documents");
-                ViewBag.error = "An error occurred while deleting the documents.";
-                return RedirectToAction("Index", "Document");
+                _logger.LogError(ex, "Error downloading documents");
+                TempData["Error"] = "An error occurred while downloading the documents.";
+                return RedirectToAction("Index");
             }
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int[] documentIds)
+        {
+            if (documentIds == null || documentIds.Length == 0)
+            {
+                TempData["Error"] = "No documents selected for deletion";
+                return RedirectToAction("Index");
+            }
+            var status = _documentService.Delete(documentIds);
+            if(status)
+            {
+                ViewBag.success = "Selected documents were successfully deleted.";
+            } else
+            {
+                TempData["Error"] = "An error occurred while deleting the documents.";
+            }
+            return RedirectToAction("Index", "Document");
         }
 
         /*

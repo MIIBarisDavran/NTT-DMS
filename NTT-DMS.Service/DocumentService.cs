@@ -135,6 +135,19 @@ namespace NTT_DMS.Service
             try
             {
                 var documents = _context.Documents.Where(d => documentIds.Contains(d.DocumentId)).ToList();
+                string pathRoot = _appEnvironment.WebRootPath;
+                foreach (var item in documents)
+                {
+                    var checkPath = Path.Combine(pathRoot, item.DocumentPath);
+                    if (File.Exists(checkPath))
+                    {
+                        File.Delete(checkPath);
+                    }
+                    else
+                    {
+                        throw new FileNotFoundException("Document not found");
+                    }
+                }
                 _context.Documents.RemoveRange(documents);
                 _context.SaveChanges();
                 return true;

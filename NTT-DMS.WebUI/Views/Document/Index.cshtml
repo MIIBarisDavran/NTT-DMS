@@ -34,20 +34,13 @@
         <strong>Failed!</strong> @TempData["error"].
     </div>
 }
-
-<form action="/Document/Delete" method="post">
-    @if (!string.IsNullOrEmpty(ViewBag.success))
-    {
-        <div class="alert alert-success" role="alert">
-            <strong>Success!</strong> @ViewBag.success.
-        </div>
-    }
-    @if (!string.IsNullOrEmpty(ViewBag.error))
-    {
-        <div class="alert alert-warning" role="alert">
-            <strong>Failed!</strong> @ViewBag.error.
-        </div>
-    }
+@if (!string.IsNullOrEmpty(ViewBag.success))
+{
+    <div class="alert alert-success" role="alert">
+        <strong>Success!</strong> @ViewBag.success.
+    </div>
+}
+<form id="idDocumentForm" method="post">
 <table class="table">
     <thead>
         <tr>
@@ -71,7 +64,7 @@
         {
             <tr>
                 <td>
-                        <input type="checkbox" name="deleteDocumentIds" id="deleteDocumentIds" value="@item.DocumentId" />
+                    <input type="checkbox" name="documentIds" id="documentIds" value="@item.DocumentId" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentId)
@@ -83,16 +76,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CategoryName)
                 </td>
-                <td>
-                     <a href="@Url.Action("DownloadAsync", "Document", new { id = item.DocumentId })" class="btn btn-info">Download</a>
-                </td>
             </tr>
         }
     </tbody>
 </table>
     <div class="modal-footer">
         <p>
-            <button type="submit" class="btn btn-danger">Delete Selected</button>
+            <button type="button" class="btn btn-info" onclick=" submitForm('/Document/DownloadSelected')">Download</button>
+            <button type="button" class="btn btn-danger" onclick="submitForm('/Document/Delete')">Delete</button>
         </p>
     </div>
 </form>
@@ -111,3 +102,13 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
+
+@section Scripts {
+    <script>
+        function submitForm(action) {
+            var form = document.getElementById('idDocumentForm');
+            form.action = action;
+            form.submit();
+        };
+    </script>
+}
