@@ -1,4 +1,5 @@
-﻿@{
+﻿@model NTT_DMS.Data.User
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -35,17 +36,25 @@
                 <p class="login-box-msg" style="color:red;">@TempData["error"]</p>
 
                 <form action="/Auth/Signup" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="UserEmail" placeholder="Email">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group has-feedback col">
+                        <input asp-for="UserEmail" class="form-control" placeholder="Email" />
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
                     </div>
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="Name" placeholder="Name">
+                    <div class="form-group has-feedback col">
+                        <input asp-for="UserName" class="form-control" placeholder="Name" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    <div class="form-group has-feedback col">
+                        <input type="password" asp-for="password" class="form-control" placeholder="Password" />
+                        <span asp-validation-for="password" class="text-danger"></span>
                     </div>
                     <div class="row">
                         <!-- /.col -->
+                        <div class="col-8">
+                            <a href="/Auth/Index" class="btn btn-danger">Back</a>
+                        </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
                         </div>

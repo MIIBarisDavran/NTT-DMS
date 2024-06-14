@@ -33,6 +33,14 @@ namespace NTT_DMS.Controllers
         }
 
         /*
+         * USER EDIT FORM
+         */
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        /*
          * CREATE NEW USER
          */
         [HttpPost]

@@ -96,18 +96,29 @@ namespace NTT_DMS.Controllers
         /*
          * SIGN UP
          */
+        public IActionResult Signup()
+        {
+            return View();
+        }
+
+        /*
+         * SIGN UP
+         */
+        [HttpPost]
         public IActionResult Signup(User user)
         {
             var status = _authService.Signup(user);
             if (status)
             {
                 ViewBag.success = "User created successfully";
+                return RedirectToAction("Index", "Auth");
             }
             else
             {
-                ViewBag.error = "Error Occurred";
+                TempData["error"] = "An error occurred while creating user.";
+                return View();
+
             }
-            return RedirectToAction("Auth", "Index");
         }
 
         public IActionResult Forbidden()

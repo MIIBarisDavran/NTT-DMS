@@ -190,6 +190,7 @@ namespace NTT_DMS.Controllers
             if(status)
             {
                 ViewBag.success = "Selected documents were successfully deleted.";
+                TempData["Error"] = null;
             } else
             {
                 TempData["Error"] = "An error occurred while deleting the documents.";

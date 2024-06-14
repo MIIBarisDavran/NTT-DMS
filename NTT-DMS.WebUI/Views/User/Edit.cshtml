@@ -1,7 +1,7 @@
-﻿@model NTT_DMS.Data.User
+﻿@model NTT_DMS.Data.UserViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,7 +21,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item">User </li>
                     <li class="breadcrumb-item active">Create </li>
 
@@ -50,11 +50,11 @@
 
             <div class="row">
                 <div class="col">
-                    <input asp-for="UserEmail" class="form-control" placeholder="Email" />
+                    <input asp-for="UserEmail" class="form-control" value="@Model.UserEmail" placeholder="Email" />
                     <span asp-validation-for="UserEmail" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <input asp-for="UserName" class="form-control" placeholder="Name" />
+                    <input asp-for="UserName" class="form-control" value="@Model.UserName" placeholder="Name" />
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
 
@@ -62,7 +62,7 @@
             <br>
             <div class="row">
                 <div class="col">
-                    <input type="password" asp-for="password" class="form-control" placeholder="Password" />
+                    <input type="password" asp-for="password" class="form-control" value="@Model.password" placeholder="Password" />
                     <span asp-validation-for="password" class="text-danger"></span>
                 </div>
                 <div class="col">
