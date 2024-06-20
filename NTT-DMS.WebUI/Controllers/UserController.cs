@@ -70,7 +70,7 @@ namespace NTT_DMS.Controllers
             {
                 ViewBag.error = "Error Occurred";
             }
-            return View();
+            return RedirectToAction("Index","User");
         }
 
         /*
