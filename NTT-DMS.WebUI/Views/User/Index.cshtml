@@ -21,9 +21,24 @@
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+<form id="idUserForm" method="post">
+    @if (!string.IsNullOrEmpty(ViewBag.success))
+    {
+        <div class="alert alert-success" role="alert">
+            <strong>Success!</strong> @ViewBag.success.
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="alert alert-warning" role="alert">
+            <strong>Failed!</strong> @ViewBag.error.
+        </div>
+    }
 <table class="table">
     <thead>
         <tr>
+            <th>
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
@@ -37,13 +52,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserRole)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    <input type="checkbox" name="userId" id="userId" value="@item.UserId" />
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserId)
                 </td>
@@ -57,11 +74,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UserRole)
                 </td>
-                <td>
-
-                    <a href="/User/Delete/@item.UserId" class="btn btn-danger">delete</a>
-                </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="modal-footer">
+    <p>
+        <button type="button" class="btn btn-info" onclick=" submitForm('/User/Edit')">Edit</button>
+        <button type="button" class="btn btn-danger" onclick="submitForm('/User/Delete')">Delete</button>
+    </p>
+</div>
+</form>
+
+@section Scripts {
+    <script>
+        function submitForm(action) {
+            var form = document.getElementById('idUserForm');
+            form.action = action;
+            form.submit();
+        };
+    </script>
+}

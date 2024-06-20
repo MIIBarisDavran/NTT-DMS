@@ -60,12 +60,12 @@ namespace NTT_DMS.Controllers
                 if (_user[0].UserRole == "Admin")
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Document");
                 }
                 else if (_user[0].UserRole == "User")
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, "User"));
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Document");
                 }
 
             }
@@ -110,7 +110,6 @@ namespace NTT_DMS.Controllers
             var status = _authService.Signup(user);
             if (status)
             {
-                ViewBag.success = "User created successfully";
                 return RedirectToAction("Index", "Auth");
             }
             else

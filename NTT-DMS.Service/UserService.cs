@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using NTT_DMS.Data;
 using System;
 using System.Collections.Generic;
@@ -26,6 +29,57 @@ namespace NTT_DMS.Service
         {
             var _users = _context.Users.ToList();
             return _users;
+        }
+
+        [HttpPost]
+        public UserViewModel GetUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.UserId == id);
+            var userViewModel = new UserViewModel
+            {
+                UserEmail = user.UserEmail,
+                UserId = user.UserId,
+                UserName = user.UserName,
+                UserRole = user.UserRole,
+                Roles = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "User", Text = "User" },
+                new SelectListItem { Value = "Admin", Text = "Admin" }
+            }
+            };
+            if (userViewModel == null)
+            {
+                return null;
+            }
+            return userViewModel;
+        }
+
+        /*
+         * CREATE USER
+         */
+        public bool UpdateUser(UserViewModel user)
+        {
+            bool status;
+            User item = new User
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                UserEmail = user.UserEmail,
+                password = user.password,
+                UserRole = user.UserRole,
+            };
+            try
+            {
+                _context.Users.Update(item);
+                _context.SaveChanges();
+                status = true;
+            }
+            catch (Exception ex)
+            {
+                var exp = ex;
+                status = false;
+            }
+            return status;
         }
 
         /*
@@ -56,20 +110,28 @@ namespace NTT_DMS.Service
         /*
          * DELETE USER
          */
-        public bool Delete(int id)
+        [HttpPost]
+        public bool Delete(int[] userId)
         {
-            bool status;
-            var item = _context.Users.Find(id);
-            try
+            bool status = true;
+            if (userId.IsNullOrEmpty())
             {
-                _context.Users.Remove(item);
-                _context.SaveChanges();
-                status = true;
-            }
-            catch (Exception ex)
-            {
-                var exp = ex;
                 status = false;
+            }
+            foreach (var item in userId)
+            {
+                var i = _context.Users.Find(item);
+                try
+                {
+                    _context.Users.Remove(i);
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    var exp = ex;
+                    status = false;
+                    break;
+                }
             }
             return status;
         }

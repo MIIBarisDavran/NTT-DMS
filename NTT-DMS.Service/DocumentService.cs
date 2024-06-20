@@ -42,7 +42,7 @@ namespace NTT_DMS.Service
             var items = from x in _context.Documents
                         where x.UsersUserId == user.UserId
                         select new DocumentViewModel
-                        {
+                        {   
                             DocumentId = x.DocumentId,
                             DocumentPath = x.DocumentPath,
                             DocumentName = x.DocumentName,
@@ -77,6 +77,7 @@ namespace NTT_DMS.Service
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             string pathRoot = path;
             string filePath = "\\Documents\\" + file.GetFilename();
+            //string filePath = Path.Combine("Documents", user.UserId.ToString(), file.GetFilename());
             //CreateDirectory(user.UserId);
             string extention = Path.GetExtension(file.FileName);
             var validateExtResponse = this.ValidateExtention(file);
@@ -174,7 +175,7 @@ namespace NTT_DMS.Service
         {
             try
             {
-                string searchPath = "\\Documents\\" + userId;
+                string searchPath = "Documents\\" + userId;
                 var absolutePath = Path.Combine(_appEnvironment.WebRootPath, searchPath);
                 bool exists = Directory.Exists(absolutePath);
                 if (!exists)

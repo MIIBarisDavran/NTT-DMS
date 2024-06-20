@@ -35,9 +35,24 @@ namespace NTT_DMS.Controllers
         /*
          * USER EDIT FORM
          */
-        public IActionResult Edit()
+        public IActionResult Edit(int userId)
         {
-            return View();
+            var user = _userService.GetUser(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        /*
+         * EDIT USER
+         */
+        [HttpPost]
+        public IActionResult EditUser(UserViewModel userModel)
+        {
+            var user = _userService.UpdateUser(userModel);
+            return RedirectToAction("Index");
         }
 
         /*
@@ -61,9 +76,10 @@ namespace NTT_DMS.Controllers
         /*
          * DELETE USER BY ID
          */
-        public IActionResult Delete(int id)
+        [HttpPost]
+        public IActionResult Delete(int[] userId)
         {
-            var status = _userService.Delete(id);
+            var status = _userService.Delete(userId);
             if (status)
             {
                 ViewBag.success = "Deleted successfully";

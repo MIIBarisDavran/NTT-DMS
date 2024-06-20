@@ -33,22 +33,13 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
-            @if (!string.IsNullOrEmpty(ViewBag.success))
-            {
-                <div class="alert alert-success" role="alert">
-                    <strong>Success!</strong> @ViewBag.success.
-                </div>
-            }
-            @if (!string.IsNullOrEmpty(ViewBag.error))
-            {
-                <div class="alert alert-warning" role="alert">
-                    <strong>Failed!</strong> @ViewBag.error.
-                </div>
-            }
+        <form asp-action="EditUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="row">
+                <div class="col" hidden="hidden">
+                    <input asp-for="UserId" class="form-control" value="@Model.UserId" placeholder="" />
+                </div>
                 <div class="col">
                     <input asp-for="UserEmail" class="form-control" value="@Model.UserEmail" placeholder="Email" />
                     <span asp-validation-for="UserEmail" class="text-danger"></span>
@@ -62,21 +53,19 @@
             <br>
             <div class="row">
                 <div class="col">
-                    <input type="password" asp-for="password" class="form-control" value="@Model.password" placeholder="Password" />
+                    <input type="password" asp-for="password" class="form-control" value="" placeholder="Password" />
                     <span asp-validation-for="password" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <select name="UserRole">
-                        <option value="User">User</option>
-                        <option value="Admin">Admin</option>
-                    </select>
+                    <select asp-for="UserRole" value="@Model.UserRole" asp-items="@Model.Roles" class="form-control"></select>
+                    <span asp-validation-for="UserRole" class="text-danger"></span>
                 </div>
-
             </div>
 
             <br>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-info btn-lg" style="float:right;" />
+                <a href="/User/Index" class="btn btn-danger">Back</a>
+                <input type="submit" value="Edit" class="btn btn-info btn-lg" style="float:right;" />
             </div>
         </form>
     </div>
