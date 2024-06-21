@@ -60,8 +60,10 @@ namespace NTT_DMS.WebUI
             services.AddScoped<DocumentService>();
             services.AddScoped<UserService>();
             services.AddScoped<CategoryService>();
+
             services.AddMvc();
             services.AddPaging();
+            
             services.AddAuthorization(options =>
             {
 
@@ -72,6 +74,13 @@ namespace NTT_DMS.WebUI
                 options.AddPolicy("User", policy =>
                 {
                     policy.RequireClaim(ClaimTypes.Role, "User");
+                });
+
+                services.AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.AddConsole();
+                    loggingBuilder.AddDebug();
+                    loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
                 });
 
             });

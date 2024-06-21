@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace NTT_DMS.Data
 {
-    [Table("N_Log")]
     public class Log
     {
         [Key]

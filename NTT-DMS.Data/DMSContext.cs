@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 
 namespace NTT_DMS.Data
 {
@@ -41,13 +42,13 @@ namespace NTT_DMS.Data
 
         public DMSContext(DbContextOptions<DMSContext> options) : base(options)
         {
-
+            
         }
 
         // Custom SaveChangesAsync method to log changes
         public async Task<int> SaveChangesAsync(string userId)
         {
-            var logs = new List<Log>();
+            var logList = new List<Log>();
             // Get all Added/Deleted/Modified entities
             foreach (var ent in this.ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Deleted || p.State == EntityState.Modified))
             {
@@ -56,14 +57,16 @@ namespace NTT_DMS.Data
                 //{
                 //    this.Logs.Add(log);
                 //}
-                logs.AddRange(GetAuditRecordsForChange(ent, userId));
+                logList.AddRange(GetAuditRecordsForChange(ent, userId));
             }
+            this.Logs.AddRange(logList);
+
             var result = await base.SaveChangesAsync();
 
             // Call the original SaveChanges(), which will save both the changes made and the audit records
-            this.Logs.AddRange(logs);
+            
 
-            await base.SaveChangesAsync();
+            //await base.SaveChangesAsync();
             return result;
 
         }
