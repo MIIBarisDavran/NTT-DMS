@@ -3,6 +3,7 @@ using NTT_DMS.Data;
 using NTT_DMS.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing.Printing;
 
 namespace NTT_DMS.Controllers
 {
@@ -18,10 +19,12 @@ namespace NTT_DMS.Controllers
         /*
          * GET LIST OF USERS
          */
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var users = _userService.GetAll();
-            return View(users);
+            int pageSize = 7;
+            var getList = await PaginatedList<User>.CreateAsyncList(users, page, pageSize);
+            return View(getList);
         }
 
         /*

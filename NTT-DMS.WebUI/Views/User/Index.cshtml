@@ -1,5 +1,4 @@
-﻿@model IEnumerable<NTT_DMS.Data.User>
-
+﻿@model PaginatedList<NTT_DMS.Data.User>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,21 +35,21 @@
     }
 <table class="table">
     <thead>
-        <tr>
+            <tr>
             <th>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                  @Html.DisplayNameFor(model => model[0].UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
+                  @Html.DisplayNameFor(model => model[0].UserEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                  @Html.DisplayNameFor(model => model[0].UserName)
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.UserRole)
+                 @Html.DisplayNameFor(model => model[0].UserRole)
             </th>
         </tr>
     </thead>
@@ -85,6 +84,22 @@
     </p>
 </div>
 </form>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 
 @section Scripts {
     <script>

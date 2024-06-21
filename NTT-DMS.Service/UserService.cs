@@ -97,9 +97,9 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Users.Add(item);
-                //_context.SaveChanges();
-                status = await _context.SaveChangesAsync(userEmail) == 1 ? true : false;
-                //status = true;
+                _context.SaveChanges();
+                //status = await _context.SaveChangesAsync(userEmail) == 1 ? true : false;
+                status = true;
             }
             catch (Exception ex)
             {
