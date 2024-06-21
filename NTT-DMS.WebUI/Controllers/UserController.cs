@@ -37,6 +37,7 @@ namespace NTT_DMS.Controllers
          */
         public IActionResult Edit(int userId)
         {
+            var email = HttpContext.Session.GetString("UserEmail");
             var user = _userService.GetUser(userId);
             if (user == null)
             {
@@ -58,10 +59,11 @@ namespace NTT_DMS.Controllers
         /*
          * CREATE NEW USER
          */
-        [HttpPost]
-        public IActionResult Create(User user)
+        [HttpPost, ActionName("Create")]
+        public async Task<IActionResult> Create(User user)
         {
-            var status = _userService.Create(user);
+            var email = HttpContext.Session.GetString("UserEmail");
+            var status =  await _userService.Create(user, email);
             if (status)
             {
                 ViewBag.success = "Created successfully";
@@ -76,7 +78,7 @@ namespace NTT_DMS.Controllers
         /*
          * DELETE USER BY ID
          */
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         public IActionResult Delete(int[] userId)
         {
             var status = _userService.Delete(userId);

@@ -41,7 +41,7 @@ namespace NTT_DMS.Controllers
             {
                 var email = HttpContext.Session.GetString("UserEmail");
                 var documentList = await _documentService.GetList(email, str);
-                int pageSize = 10;
+                int pageSize = 7;
                 return View(await PaginatedList<DocumentViewModel>.CreateAsync(documentList.AsNoTracking(), page, pageSize));
             }
             catch (Exception ex)
@@ -91,41 +91,6 @@ namespace NTT_DMS.Controllers
                 return View();
             }
         }
-
-        /*
-         * DOWNLOAD DOCUMENT
-         */
-        //public async Task<IActionResult> DownloadAsync(int id)
-        //{
-        //    try
-        //    {
-        //        var userId = HttpContext.Session.GetInt32("UserId");
-        //        if (userId == null)
-        //        {
-        //            TempData["Error"] = "User not logged in";
-        //            return RedirectToAction("Index");
-        //        }
-
-        //        var status = _documentService.DocumentPermissionRule((int)userId, id);
-        //        if (status)
-        //        {
-        //            string filePath = _documentService.GetPath((int)userId, id);
-        //            string fileName = _documentService.GetName((int)userId, id);
-        //            return await ReturnDocumentFileAsync(filePath, fileName);
-        //        }
-        //        else
-        //        {
-        //            TempData["Error"] = "Document permission failed";
-        //            return RedirectToAction("Index");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error downloading document");
-        //        TempData["Error"] = "An error occurred while downloading the document.";
-        //        return RedirectToAction("Index");
-        //    }
-        //}
 
         /*
          * DOWNLOAD DOCUMENT

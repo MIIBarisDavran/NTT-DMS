@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -85,7 +86,7 @@ namespace NTT_DMS.Service
         /*
          * CREATE USER
          */
-        public bool Create(User user)
+        public async Task<bool> Create(User user, string userEmail)
         {
             bool status;
             User item = new User();
@@ -96,8 +97,9 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Users.Add(item);
-                _context.SaveChanges();
-                status = true;
+                //_context.SaveChanges();
+                status = await _context.SaveChangesAsync(userEmail) == 1 ? true : false;
+                //status = true;
             }
             catch (Exception ex)
             {
