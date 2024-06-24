@@ -73,7 +73,7 @@ namespace NTT_DMS.Data
                 ActionID = "Login",
                 ColumnName = "UserEmail",
                 OriginalValue = "",
-                NewValue = userEmail,
+                NewValue = "",
                 Created_by = userEmail,
                 Created_date = DateTime.Now
             };
@@ -93,7 +93,7 @@ namespace NTT_DMS.Data
                 ActionID = eventType,
                 ColumnName = ColumnName,
                 OriginalValue = "",
-                NewValue = userEmail,
+                NewValue = "",
                 Created_by = userEmail,
                 Created_date = DateTime.Now
             };

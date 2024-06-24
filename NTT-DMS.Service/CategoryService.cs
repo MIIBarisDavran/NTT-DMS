@@ -22,15 +22,19 @@ namespace NTT_DMS.Service
         {
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             var categories = _context.Categories.Where(x => x.Users.UserId == user.UserId).ToList();
+            _context.CustomLogAction(email, "Get Category", "Category", "*ALL");
             return categories;
         }
 
         /*
          * CREATE CATEGORY
          */
-        public bool CreateCategory(Category Cat, string email)
+        public async Task<bool> CreateCategory(Category Cat, string email)
         {
-            bool status;
+            if (Cat == null)
+            {
+                return false;
+            }
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
             Category item = new Category();
             item.CategoryName = Cat.CategoryName;
@@ -39,37 +43,33 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Categories.Add(item);
-                _context.SaveChanges();
-                status = true;
+                await _context.SaveChangesAsync(email);
+                return true;
             }
             catch (Exception ex)
             {
                 var exp = ex;
-                status = false;
+                return false;
             }
-            return status;
         }
 
         /*
          * DELETE CATEGORY
          */
-        public bool DeleteCategory(int id)
+        public async Task<bool> DeleteCategory(int id, string email)
         {
-            bool status;
             var item = _context.Categories.Find(id);
-
             try
             {
                 _context.Categories.Remove(item);
-                _context.SaveChanges();
-                status = true;
+                await _context.SaveChangesAsync(email);
+                return true;
             }
             catch (Exception ex)
             {
                 var exp = ex;
-                status = false;
+                return false;
             }
-            return status;
         }
     }
 }

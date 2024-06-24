@@ -37,10 +37,10 @@ namespace NTT_DMS.Controllers
          * NEW CATEGORY CREATE
          */
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             var email = HttpContext.Session.GetString("UserEmail");
-            var status = _categoryService.CreateCategory(category, email);
+            var status = await _categoryService.CreateCategory(category, email);
             if (status)
             {
                 ViewBag.success = "Created successfully";
@@ -56,9 +56,10 @@ namespace NTT_DMS.Controllers
          * CATEGORY DELETE BY ID
          */
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var status = _categoryService.DeleteCategory(id);
+            var email = HttpContext.Session.GetString("UserEmail");
+            var status = await _categoryService.DeleteCategory(id, email);
             if (status)
             {
                 TempData["success"] = "Deleted successfully";

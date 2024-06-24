@@ -28,7 +28,6 @@ namespace NTT_DMS.Service
             {
                 return null;
             }
-            //_context.LogUserLogin(user.UserEmail);
             _context.CustomLogAction(user.UserEmail, "Login", "User", "Email");
             return _context.Users.Where(x => x.UserEmail == _user.UserEmail).Select(x => new User
             {
