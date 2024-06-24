@@ -65,7 +65,11 @@ namespace NTT_DMS.Service
          */
         public async Task<bool> UpdateUser(UserViewModel user, string userEmail)
         {
-            bool status;
+            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.UserEmail) || string.IsNullOrWhiteSpace(user.password)
+                || string.IsNullOrWhiteSpace(user.UserRole) || string.IsNullOrWhiteSpace(user.UserId.ToString()))
+            {
+                return false;
+            }
             User item = new User
             {
                 UserId = user.UserId,
@@ -78,15 +82,13 @@ namespace NTT_DMS.Service
             {
                 _context.Users.Update(item);
                 await _context.SaveChangesAsync(userEmail);
-                //_context.SaveChanges();
-                status = true;
+                return true;
             }
             catch (Exception ex)
             {
                 var exp = ex;
-                status = false;
+                return false;
             }
-            return status;
         }
 
         /*
@@ -94,7 +96,11 @@ namespace NTT_DMS.Service
          */
         public async Task<bool> Create(User user, string userEmail)
         {
-            bool status;
+            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.UserEmail) || string.IsNullOrWhiteSpace(user.password)
+                || string.IsNullOrWhiteSpace(user.UserRole))
+            {
+                return false;
+            }
             User item = new User();
             item.UserName = user.UserName;
             item.UserEmail = user.UserEmail;
@@ -104,15 +110,13 @@ namespace NTT_DMS.Service
             {
                 _context.Users.Add(item);
                 await _context.SaveChangesAsync(userEmail);
-                //_context.SaveChanges();
-                status = true;
+                return true;
             }
             catch (Exception ex)
             {
                 var exp = ex;
-                status = false;
+                return false;
             }
-            return status;
         }
 
         /*
@@ -134,7 +138,6 @@ namespace NTT_DMS.Service
                 {
                     _context.Users.Remove(i);
                     await _context.SaveChangesAsync(userEmail);
-                    //_context.SaveChanges();
                 }
                 catch (Exception ex)
                 {

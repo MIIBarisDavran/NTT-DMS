@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
-<body class="hold-transition login-page" style="background-color:#3d508a !important;">
+<body class="hold-transition login-page">
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -30,26 +30,26 @@
     <form action="/Auth/Signup" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <label for="email">Email</label>
+        <label for="email" >Email</label>
         <div class="form-group has-feedback col">
             <input asp-for="UserEmail" class="form-control" placeholder="Email" />
             <span asp-validation-for="UserEmail" class="text-danger"></span>
         </div>
 
-        <label for="userName">Username</label>
+        <label for="userName" >Username</label>
         <div class="form-group has-feedback col">
             <input asp-for="UserName" class="form-control" placeholder="Name" />
             <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
 
-        <label for="password">Password</label>
+        <label for="password" >Password</label>
         <div class="form-group has-feedback col">
             <input type="password" asp-for="password" class="form-control" placeholder="Password" />
             <span asp-validation-for="password" class="text-danger"></span>
         </div>
         <div class="row">
-            <div class="">
-                <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
+            <div>
+                <button type="submit" class="btn btn-primary btn-block btn-flat buttonSignup">Sign Up</button>
             </div>
             <div style="margin-top:10px">
                 <a style="font-weight:600" href="~/Auth/Index">Back</a>

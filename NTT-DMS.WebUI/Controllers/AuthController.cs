@@ -105,9 +105,9 @@ namespace NTT_DMS.Controllers
          * SIGN UP
          */
         [HttpPost]
-        public IActionResult Signup(User user)
+        public async Task<IActionResult> Signup(User user)
         {
-            var status = _authService.Signup(user);
+            var status = await _authService.Signup(user);
             if (status)
             {
                 return RedirectToAction("Index", "Auth");
@@ -115,7 +115,7 @@ namespace NTT_DMS.Controllers
             else
             {
                 TempData["error"] = "An error occurred while creating user.";
-                return null;
+                return View();
             }
         }
 

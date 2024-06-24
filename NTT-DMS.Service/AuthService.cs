@@ -28,6 +28,8 @@ namespace NTT_DMS.Service
             {
                 return null;
             }
+            //_context.LogUserLogin(user.UserEmail);
+            _context.CustomLogAction(user.UserEmail, "Login", "User", "Email");
             return _context.Users.Where(x => x.UserEmail == _user.UserEmail).Select(x => new User
             {
                 UserId = x.UserId,
@@ -41,9 +43,12 @@ namespace NTT_DMS.Service
         /*
          * SIGN UP
          */
-        public bool Signup(User user)
+        public async Task<bool> Signup(User user)
         {
-            bool status;
+            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.UserEmail) || string.IsNullOrWhiteSpace(user.password))
+            {
+                return false;
+            }
             User item = new User();
             item.UserName = user.UserName;
             item.UserEmail = user.UserEmail;
@@ -52,15 +57,14 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Users.Add(item);
-                _context.SaveChanges();
-                status = true;
+                await _context.SaveChangesAsync(user.UserEmail);
+                return true;
             }
             catch (Exception ex)
             {
                 var exp = ex;
-                status = false;
+                return false;
             }
-            return status;
         }
     }
 }

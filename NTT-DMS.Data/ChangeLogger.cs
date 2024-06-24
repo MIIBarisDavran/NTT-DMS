@@ -15,7 +15,6 @@ namespace NTT_DMS.Data
 
     public class ChangeLogger : IChangeLogger
     {
-
         public List<Log> GetAuditRecordsForChange(EntityEntry dbEntry, string userId)
         {
                 var logs = new List<Log>();
