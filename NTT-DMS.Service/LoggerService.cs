@@ -23,12 +23,22 @@ namespace NTT_DMS.Service
             var _logs = _context.Logs.ToList();
             if (!string.IsNullOrEmpty(str))
             {
-                var searchedItems = _logs.Where(x => x.LogID.ToString().Contains(str) || x.NewValue.Contains(str) || x.OriginalValue.Contains(str) 
-                || x.OriginalValue.Contains(str) || x.RecordID.Contains(str) || x.RecordID.Contains(str) || x.TableName.Contains(str)
-                || x.ActionID.Contains(str) || x.ColumnName.Contains(str) || x.Created_by.Contains(str) || x.Created_date.ToString().Contains(str)).ToList();
+                var searchedItems = _logs
+            .Where(x => x.LogID.ToString().Contains(str)
+                     || x.NewValue.Contains(str)
+                     || x.OriginalValue.Contains(str)
+                     || x.EventType.Contains(str)
+                     || x.RecordID.Contains(str)
+                     || x.TableName.Contains(str)
+                     || x.ActionID.Contains(str)
+                     || x.ColumnName.Contains(str)
+                     || x.Created_by.Contains(str)
+                     || x.Created_date.ToString().Contains(str))
+            .OrderByDescending(x => x.Created_date)
+            .ToList();
                 return searchedItems;
             }
-            return _logs;
+            return _logs.OrderByDescending(x => x.Created_date).ToList();
         }
 
     }

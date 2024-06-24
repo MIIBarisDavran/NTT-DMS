@@ -63,7 +63,7 @@ namespace NTT_DMS.Service
         /*
          * CREATE USER
          */
-        public bool UpdateUser(UserViewModel user)
+        public async Task<bool> UpdateUser(UserViewModel user, string userEmail)
         {
             bool status;
             User item = new User
@@ -77,7 +77,8 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Users.Update(item);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(userEmail);
+                //_context.SaveChanges();
                 status = true;
             }
             catch (Exception ex)
@@ -118,12 +119,13 @@ namespace NTT_DMS.Service
          * DELETE USER
          */
         [HttpPost]
-        public bool Delete(int[] userId)
+        public async Task<bool> Delete(int[] userId, string userEmail)
         {
             bool status = true;
             if (userId.IsNullOrEmpty())
             {
                 status = false;
+                return status;
             }
             foreach (var item in userId)
             {
@@ -131,7 +133,8 @@ namespace NTT_DMS.Service
                 try
                 {
                     _context.Users.Remove(i);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync(userEmail);
+                    //_context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -141,6 +144,7 @@ namespace NTT_DMS.Service
                 }
             }
             return status;
+
         }
 
     }

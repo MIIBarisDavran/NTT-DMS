@@ -60,6 +60,7 @@ namespace NTT_DMS.WebUI
             services.AddScoped<DocumentService>();
             services.AddScoped<UserService>();
             services.AddScoped<CategoryService>();
+            services.AddScoped<Func<DMSContext>>(provider => () => provider.GetService<DMSContext>());
             services.AddScoped<IChangeLogger, ChangeLogger>();
 
             services.AddMvc();

@@ -40,7 +40,6 @@ namespace NTT_DMS.Controllers
          */
         public IActionResult Edit(int userId)
         {
-            var email = HttpContext.Session.GetString("UserEmail");
             var user = _userService.GetUser(userId);
             if (user == null)
             {
@@ -53,9 +52,10 @@ namespace NTT_DMS.Controllers
          * EDIT USER
          */
         [HttpPost]
-        public IActionResult EditUser(UserViewModel userModel)
+        public async Task<IActionResult> EditUser(UserViewModel userModel)
         {
-            var user = _userService.UpdateUser(userModel);
+            var email = HttpContext.Session.GetString("UserEmail");
+            var user = await _userService.UpdateUser(userModel, email);
             return RedirectToAction("Index");
         }
 
@@ -84,9 +84,10 @@ namespace NTT_DMS.Controllers
          * DELETE USER BY ID
          */
         [HttpPost, ActionName("Delete")]
-        public IActionResult Delete(int[] userId)
+        public async Task<IActionResult> Delete(int[] userId)
         {
-            var status = _userService.Delete(userId);
+            var email = HttpContext.Session.GetString("UserEmail");
+            var status = await _userService.Delete(userId, email);
             if (status)
             {
                 ViewBag.success = "Deleted successfully";
