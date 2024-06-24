@@ -26,9 +26,14 @@ namespace NTT_DMS.Service
         /*
          * GET LIST OF USERS
          */
-        public List<User> GetAll()
+        public List<User> GetAll(string str)
         {
             var _users = _context.Users.ToList();
+            if (!string.IsNullOrEmpty(str))
+            {
+                var searchedItems = _users.Where(x => x.UserEmail.Contains(str) || x.UserName.Contains(str) || x.UserRole.Contains(str)).ToList();
+                return searchedItems;
+            }
             return _users;
         }
 
@@ -97,8 +102,8 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Users.Add(item);
-                _context.SaveChanges();
-                //status = await _context.SaveChangesAsync(userEmail) == 1 ? true : false;
+                await _context.SaveChangesAsync(userEmail);
+                //_context.SaveChanges();
                 status = true;
             }
             catch (Exception ex)

@@ -13,13 +13,27 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item">User </li>
+                    <li class="breadcrumb-item">User</li>
 
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+<form action="/User/Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <input type="text" class="form-group" name="str" placeholder="Search Users.." />
+            <input type="submit" value="Search" class="btn btn-default btn-sm" />
+        </p>
+    </div>
+</form>
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Failed!</strong> @TempData["error"].
+    </div>
+}
 <form id="idUserForm" method="post">
     @if (!string.IsNullOrEmpty(ViewBag.success))
     {

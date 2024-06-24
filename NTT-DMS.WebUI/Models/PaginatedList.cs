@@ -40,7 +40,7 @@ namespace NTT_DMS
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
-        public static async Task<PaginatedList<T>> CreateAsyncList(List<T> source, int pageIndex, int pageSize)
+        public static async Task<PaginatedList<T>> CreateSyncList(List<T> source, int pageIndex, int pageSize)
         {
             var count = source.Count;
             var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();

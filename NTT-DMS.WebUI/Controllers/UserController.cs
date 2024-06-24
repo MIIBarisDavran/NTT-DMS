@@ -19,11 +19,11 @@ namespace NTT_DMS.Controllers
         /*
          * GET LIST OF USERS
          */
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string str, int page = 1)
         {
-            var users = _userService.GetAll();
+            var users = _userService.GetAll(str);
             int pageSize = 7;
-            var getList = await PaginatedList<User>.CreateAsyncList(users, page, pageSize);
+            var getList = await PaginatedList<User>.CreateSyncList(users, page, pageSize);
             return View(getList);
         }
 
@@ -70,12 +70,14 @@ namespace NTT_DMS.Controllers
             if (status)
             {
                 ViewBag.success = "Created successfully";
+                return RedirectToAction("Index", "User");
+
             }
             else
             {
                 ViewBag.error = "Error Occurred";
+                return View();
             }
-            return RedirectToAction("Index","User");
         }
 
         /*
