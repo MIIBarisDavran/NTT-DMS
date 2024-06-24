@@ -68,7 +68,7 @@ namespace NTT_DMS.Service
         /*
          * UPLOAD DOCUMENT
          */
-        public Dictionary<string, string> Upload(IFormFile file, string path, Document document, string email)
+        public async Task<Dictionary<string, string>> Upload(IFormFile file, string path, Document document, string email)
         {
             var response = new Dictionary<string, string>
             {
@@ -109,7 +109,8 @@ namespace NTT_DMS.Service
                         item.CategoryId = document.CategoryId;
                         item.UsersUserId = user.UserId;
                         _context.Add(item);
-                        _context.SaveChanges();
+                        await _context.SaveChangesAsync(email);
+                        //_context.SaveChanges();
                         file.CopyTo(stream);
                     }
                     response = new Dictionary<string, string>

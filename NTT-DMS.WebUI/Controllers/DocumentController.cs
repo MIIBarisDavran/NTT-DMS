@@ -73,7 +73,7 @@ namespace NTT_DMS.Controllers
                 ViewBag.categories = _categoryService.GetAll(email);
                 string pathRoot = _appEnvironment.WebRootPath;
 
-                var documentUploadResponse = _documentService.Upload(file, pathRoot, document, email);
+                var documentUploadResponse = await _documentService.Upload(file, pathRoot, document, email);
                 if (documentUploadResponse.ContainsKey("error"))
                 {
                     ViewBag.error = documentUploadResponse["error"];

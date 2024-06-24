@@ -62,25 +62,6 @@ namespace NTT_DMS.Data
             await base.SaveChangesAsync();
         }
 
-        public void LogUserLogin(string userEmail)
-        {
-            var log = new Log
-            {
-                LogID = Guid.NewGuid(),
-                EventType = "Login",
-                TableName = "User",
-                RecordID = userEmail,
-                ActionID = "Login",
-                ColumnName = "UserEmail",
-                OriginalValue = "",
-                NewValue = "",
-                Created_by = userEmail,
-                Created_date = DateTime.Now
-            };
-
-            Logs.Add(log);
-            SaveChanges();
-        }
 
         public void CustomLogAction(string userEmail, string eventType, string tableName, string ColumnName)
         {
