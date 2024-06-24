@@ -20,8 +20,8 @@ namespace NTT_DMS.Service
         private readonly DMSContext _context;
         private readonly IHostingEnvironment _appEnvironment;
         private readonly ILogger<DocumentService> _logger;
-
-
+            
+            
         public DocumentService(DMSContext db, IHostingEnvironment appEnvironment, ILogger<DocumentService> logger)
         {
             _context = db;
