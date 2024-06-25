@@ -127,16 +127,16 @@ namespace NTT_DMS.Controllers
                     {
                         foreach (var documentId in documentIds)
                         {
-                                string fileName = _documentService.GetName((int)userId, documentId);
-                                var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", userId.ToString(), fileName);
+                            string fileName = _documentService.GetName((int)userId, documentId);
+                            var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", userId.ToString(), fileName);
 
-                                var fileBytes = await System.IO.File.ReadAllBytesAsync(path);
-                                var zipEntry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
+                            var fileBytes = await System.IO.File.ReadAllBytesAsync(path);
+                            var zipEntry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
 
-                                using (var zipStream = zipEntry.Open())
-                                {
-                                    await zipStream.WriteAsync(fileBytes, 0, fileBytes.Length);
-                                }
+                            using (var zipStream = zipEntry.Open())
+                            {
+                                await zipStream.WriteAsync(fileBytes, 0, fileBytes.Length);
+                            }
                         }
                     }
 

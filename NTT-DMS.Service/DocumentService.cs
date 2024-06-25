@@ -94,9 +94,17 @@ namespace NTT_DMS.Service
             };
                 return response;
             }
+            var existingDocument = _context.Documents.FirstOrDefault(d => d.UsersUserId == user.UserId && d.DocumentName == file.GetFilename());
+            if (existingDocument != null)
+            {
+                response = new Dictionary<string, string>
+            {
+                {"error", "You have already uploaded a document with the same name."}
+            };
+                return response;
+            }
             string extention = Path.GetExtension(file.FileName);
             //var validateExtResponse = this.ValidateExtention(file);
-            var validateFileSizeResponse = this.ValidateFileSize(file);
             //if (validateExtResponse["status"] == false)
             //{
             //    response = new Dictionary<string, string>
@@ -104,6 +112,7 @@ namespace NTT_DMS.Service
             //        {"error", "Invalid document extention. [allowed types: pdf/doc/docx/csv/png/jpg/jpeg/txt]"}
             //    };
             //}
+            var validateFileSizeResponse = this.ValidateFileSize(file);
             if (validateFileSizeResponse["status"] == false)
             {
                 response = new Dictionary<string, string>

@@ -38,9 +38,14 @@ namespace NTT_DMS.Controllers
         /*
          * USER EDIT FORM
          */
-        public IActionResult Edit(int userId)
+        public IActionResult Edit(int[] userId)
         {
-            var user = _userService.GetUser(userId);
+            if(userId.Length != 1)
+            {
+                TempData["error"] = "Please select one user to edit!";
+                return RedirectToAction("Index");
+            }
+            var user = _userService.GetUser(userId[0]);
             if (user == null)
             {
                 return NotFound();

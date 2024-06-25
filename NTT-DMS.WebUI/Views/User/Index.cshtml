@@ -28,12 +28,6 @@
         </p>
     </div>
 </form>
-@if (TempData["error"] != null)
-{
-    <div class="alert alert-warning" role="alert">
-        <strong>Failed!</strong> @TempData["error"].
-    </div>
-}
 <form id="idUserForm" method="post">
     @if (!string.IsNullOrEmpty(ViewBag.success))
     {

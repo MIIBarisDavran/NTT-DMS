@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Newtonsoft.Json;
 
 namespace NTT_DMS.Data
 {
@@ -27,11 +28,11 @@ namespace NTT_DMS.Data
 
                 if (dbEntry.State == EntityState.Added)
                 {
-                    logs.Add(CreateLogEntry("Add", tableName, "", "", "*ALL", "", dbEntry.CurrentValues.ToObject().ToString(), userId, changeTime));
+                    logs.Add(CreateLogEntry("Add", tableName, "", "", "*ALL", "", SerializeObject(dbEntry.CurrentValues), userId, changeTime));
                 }
                 else if (dbEntry.State == EntityState.Deleted)
                 {
-                    logs.Add(CreateLogEntry("Delete", tableName, "", "", "*ALL", dbEntry.OriginalValues.ToObject().ToString(), "", userId, changeTime));
+                    logs.Add(CreateLogEntry("Delete", tableName, "", "", "*ALL", SerializeObject(dbEntry.CurrentValues), "", userId, changeTime));
                 }
                 else if (dbEntry.State == EntityState.Modified)
                 {
@@ -48,6 +49,11 @@ namespace NTT_DMS.Data
                 }
 
                 return logs;
+        }
+        private string SerializeObject(PropertyValues propertyValues)
+        {
+            var properties = propertyValues.Properties.Select(p => new { Name = p.Name, Value = propertyValues[p.Name] }).ToList();
+            return JsonConvert.SerializeObject(properties, Formatting.Indented);
         }
 
         private Log CreateLogEntry(string eventType, string tableName, string recordId, string actionId, string columnName, string originalValue, string newValue, string userId, DateTime changeTime)
