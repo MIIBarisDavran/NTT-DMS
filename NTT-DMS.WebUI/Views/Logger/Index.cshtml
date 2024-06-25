@@ -5,7 +5,6 @@
 }
 <!DOCTYPE html>
 <html>
-
 <head>
 </head>
 <body>
@@ -26,12 +25,10 @@
     </div><!-- /.container-fluid -->
 </div>
 <form action="/Logger/Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <input type="text" class="form-group" name="str" placeholder="Search Logs.." />
-            <input type="submit" value="Search" class="btn btn-default btn-sm" />
-        </p>
-    </div>
+     <div class="margin-" style="display:flex;margin-bottom:20px;"> 
+            <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Logs.." />
+            <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" /> 
+     </div>  
 </form>
 @if (TempData["error"] != null)
 {
@@ -39,7 +36,7 @@
         <strong>Failed!</strong> @TempData["error"].
     </div>
 }
-<table class="table custom-table">
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>

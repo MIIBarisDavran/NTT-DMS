@@ -25,7 +25,7 @@
     <strong>@TempData["success"]</strong>
 
     <strong style="color:red;">@TempData["error"]</strong>
-    <table class="table">
+<table class="table table-bordered table-striped">
 
         <thead>
             <tr>
@@ -40,7 +40,7 @@
                 <tr>
                     <td>@i.CategoryId</td>
                     <td>@i.CategoryName</td>
-                    <td>
+                    <td class="justify-content-center align-items-center" style="display:flex;">
                        
                         <a href="/Category/Delete/@i.CategoryId" class="btn btn-danger">delete</a>
 
