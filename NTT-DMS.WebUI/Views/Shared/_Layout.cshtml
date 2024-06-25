@@ -13,9 +13,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
     <!-- jquery -->
-
-
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <!-- toaster -->
+    <link rel="stylesheet" href="~/adminlte/plugins/toastr/Toastr.css">
 
     <link rel="stylesheet" href="~/adminlte/plugins/iCheck/flat/blue.css">
     <!-- jvectormap -->
@@ -167,6 +167,7 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper" style="background:#fff;">
                 <div class="pad" style="padding:5%;">
+                    <partial name="_Notification"></partial>
                     @RenderBody()
                 </div>
             </div>

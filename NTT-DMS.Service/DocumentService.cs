@@ -75,13 +75,28 @@ namespace NTT_DMS.Service
                 {"error", "Something went wrong."}
             };
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
+            if (user == null)
+            {
+                response = new Dictionary<string, string>
+            {
+                {"error", "User not found."}
+            };
+                return response;
+            }
             string pathRoot = path;
-            string filePath = "\\Documents\\" + file.GetFilename();
-            //string filePath = Path.Combine("Documents", user.UserId.ToString(), file.GetFilename());
-            //CreateDirectory(user.UserId);
+            string userFolderPath = "Documents\\" + user.UserId.ToString();
+            string filePath = Path.Combine(userFolderPath, file.GetFilename());
+            if (!CreateDirectory(pathRoot, userFolderPath))
+            {
+                response = new Dictionary<string, string>
+            {
+                {"error", "Failed to create user directory."}
+            };
+                return response;
+            }
             string extention = Path.GetExtension(file.FileName);
             var validateExtResponse = this.ValidateExtention(file);
-            var validateFileSizeResponse = this.ValidateExtention(file);
+            var validateFileSizeResponse = this.ValidateFileSize(file);
             if (validateExtResponse["status"] == false)
             {
                 response = new Dictionary<string, string>
@@ -100,19 +115,21 @@ namespace NTT_DMS.Service
             {
                 try
                 {
-                    using (var stream = new FileStream(pathRoot + filePath, FileMode.Create))
+                    string fullPath = Path.Combine(path, filePath);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
-                        Document item = new Document();
-                        item.DocumentPath = filePath;
-                        item.DocumentName = file.FileName;
-                        item.DocumentTags = file.FileName;
-                        item.CategoryId = document.CategoryId;
-                        item.UsersUserId = user.UserId;
-                        _context.Add(item);
-                        await _context.SaveChangesAsync(email);
-                        //_context.SaveChanges();
                         file.CopyTo(stream);
                     }
+                    Document item = new Document
+                    {
+                        DocumentPath = filePath,
+                        DocumentName = file.FileName,
+                        DocumentTags = file.FileName,
+                        CategoryId = document.CategoryId,
+                        UsersUserId = user.UserId
+                    };
+                    _context.Add(item);
+                    await _context.SaveChangesAsync(email);
                     response = new Dictionary<string, string>
                     {
                         {"success", "File uploaded successfully."}
@@ -172,18 +189,16 @@ namespace NTT_DMS.Service
             return item.DocumentPath;
         }
 
-        public bool CreateDirectory(int userId)
+        public bool CreateDirectory(string pathRoot, string userFolderPath)
         {
             try
             {
-                string searchPath = "Documents\\" + userId;
-                var absolutePath = Path.Combine(_appEnvironment.WebRootPath, searchPath);
-                bool exists = Directory.Exists(absolutePath);
-                if (!exists)
+                var absolutePath = Path.Combine(_appEnvironment.WebRootPath, userFolderPath);
+                if (!Directory.Exists(absolutePath))
                 {
-                    Directory.CreateDirectory(searchPath);
+                    Directory.CreateDirectory(absolutePath);
                 }
-                return exists;
+                return true;
             }
             catch (Exception ex)
             {

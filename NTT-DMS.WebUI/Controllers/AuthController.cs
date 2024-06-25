@@ -115,7 +115,7 @@ namespace NTT_DMS.Controllers
             else
             {
                 TempData["error"] = "An error occurred while creating user.";
-                return View();
+                return RedirectToAction("Signup","Auth");
             }
         }
 

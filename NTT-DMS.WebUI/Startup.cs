@@ -60,7 +60,6 @@ namespace NTT_DMS.WebUI
             services.AddScoped<DocumentService>();
             services.AddScoped<UserService>();
             services.AddScoped<CategoryService>();
-            services.AddScoped<Func<DMSContext>>(provider => () => provider.GetService<DMSContext>());
             services.AddScoped<IChangeLogger, ChangeLogger>();
 
             services.AddMvc();
@@ -78,13 +77,13 @@ namespace NTT_DMS.WebUI
                     policy.RequireClaim(ClaimTypes.Role, "User");
                 });
 
-                services.AddLogging(loggingBuilder =>
-                {
-                    loggingBuilder.AddConsole();
-                    loggingBuilder.AddDebug();
-                    loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
-                });
+            });
 
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddDebug();
+                loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
             });
 
 

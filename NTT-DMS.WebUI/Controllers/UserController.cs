@@ -55,27 +55,35 @@ namespace NTT_DMS.Controllers
         public async Task<IActionResult> EditUser(UserViewModel userModel)
         {
             var email = HttpContext.Session.GetString("UserEmail");
-            var user = await _userService.UpdateUser(userModel, email);
-            return RedirectToAction("Index");
+            var status = await _userService.UpdateUser(userModel, email);
+            if (status)
+            {
+                TempData["success"] = "User edited successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["error"] = "Error occurred while editing user";
+                return View();
+            }
         }
 
         /*
          * CREATE NEW USER
          */
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
             var email = HttpContext.Session.GetString("UserEmail");
             var status =  await _userService.Create(user, email);
             if (status)
             {
-                ViewBag.success = "Created successfully";
-                return RedirectToAction("Index", "User");
-
+                TempData["success"] = "User created successfully";
+                return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.error = "Error Occurred";
+                TempData["error"] = "Error occurred while creating user";
                 return View();
             }
         }
@@ -90,11 +98,11 @@ namespace NTT_DMS.Controllers
             var status = await _userService.Delete(userId, email);
             if (status)
             {
-                ViewBag.success = "Deleted successfully";
+                TempData["success"] = "User deleted successfully";
             }
             else
             {
-                ViewBag.error = "Error Occurred";
+                TempData["error"] = "Error occurred while deleting user";
             }
             return RedirectToAction("Index");
         }

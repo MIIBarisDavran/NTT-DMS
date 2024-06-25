@@ -28,12 +28,6 @@
     </div>
 </form>
 
-@if (TempData["error"] != null)
-{
-    <div class="alert alert-warning" role="alert">
-        <strong>Failed!</strong> @TempData["error"].
-    </div>
-}
 @if (!string.IsNullOrEmpty(ViewBag.success))
 {
     <div class="alert alert-success" role="alert">

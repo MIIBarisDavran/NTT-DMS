@@ -29,6 +29,7 @@
     </div>
     <form action="/Auth/Signup" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <p class="login-box-msg" style="color:red;">@TempData["error"]</p>
 
         <label for="email" >Email</label>
         <div class="form-group has-feedback col">
