@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO.Compression;
+using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace NTT_DMS.Controllers
 {
@@ -65,7 +67,7 @@ namespace NTT_DMS.Controllers
          * UPLOAD NEW DOCUMENT
          */
         [HttpPost]
-        public async Task<IActionResult> Create(IFormFile file, Document document)
+        public async Task<IActionResult> Create(IFormFile file, NTT_DMS.Data.Document document)
         {
             try
             {
@@ -113,6 +115,12 @@ namespace NTT_DMS.Controllers
 
             try
             {
+                if (documentIds.Length == 1)
+                {
+                    string fileName = _documentService.GetName((int)userId, documentIds[0]);
+                    var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", userId.ToString(), fileName);
+                    return await ReturnDocumentFileAsync(path);
+                }
                 using (var memoryStream = new MemoryStream())
                 {
                     using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
@@ -120,7 +128,7 @@ namespace NTT_DMS.Controllers
                         foreach (var documentId in documentIds)
                         {
                                 string fileName = _documentService.GetName((int)userId, documentId);
-                                var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", fileName);
+                                var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", userId.ToString(), fileName);
 
                                 var fileBytes = await System.IO.File.ReadAllBytesAsync(path);
                                 var zipEntry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
@@ -166,54 +174,29 @@ namespace NTT_DMS.Controllers
         /*
          * RETURN FILE
          */
-        private async Task<FileResult> ReturnDocumentFileAsync(string filePath, string fileName)
+        private async Task<FileResult> ReturnDocumentFileAsync(string filePath)
         {
             try
             {
-                var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", fileName);
-
                 var memory = new MemoryStream();
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     await stream.CopyToAsync(memory);
                 }
                 memory.Position = 0;
-                return File(memory, GetContentType(path), Path.GetFileName(path));
+                var contentTypeProvider = new FileExtensionContentTypeProvider();
+                if (!contentTypeProvider.TryGetContentType(filePath, out string contentType))
+                {
+                    contentType = "application/octet-stream";
+                }
+                return File(memory, contentType, Path.GetFileName(filePath));
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error returning document file");
                 throw;
             }
-        }
-
-        /*
-         * GET CONTENT TYPES
-         */
-        private string GetContentType(string path)
-        {
-            var types = GetMimeTypes();
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            return types[ext];
-        }
-
-        /*
-         * GET MIME TYPES
-         */
-        private Dictionary<string, string> GetMimeTypes()
-        {
-            return new Dictionary<string, string>
-            {
-                { ".txt", "text/plain" },
-                { ".pdf", "application/pdf" },
-                { ".doc", "application/vnd.ms-word" },
-                { ".docx", "application/vnd.ms-word" },
-                { ".png", "image/png" },
-                { ".jpg", "image/jpeg" },
-                { ".jpeg", "image/jpeg" },
-                { ".gif", "image/gif" },
-                { ".csv", "text/csv" }
-            };
         }
     }
 }

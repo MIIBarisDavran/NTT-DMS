@@ -71,7 +71,7 @@ namespace NTT_DMS.Controllers
         /*
          * CREATE NEW USER
          */
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         public async Task<IActionResult> Create(User user)
         {
             var email = HttpContext.Session.GetString("UserEmail");

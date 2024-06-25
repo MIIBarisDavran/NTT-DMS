@@ -95,16 +95,16 @@ namespace NTT_DMS.Service
                 return response;
             }
             string extention = Path.GetExtension(file.FileName);
-            var validateExtResponse = this.ValidateExtention(file);
+            //var validateExtResponse = this.ValidateExtention(file);
             var validateFileSizeResponse = this.ValidateFileSize(file);
-            if (validateExtResponse["status"] == false)
-            {
-                response = new Dictionary<string, string>
-                {
-                    {"error", "Invalid document extention. [allowed types: pdf/doc/docx/csv/png/jpg/jpeg/txt]"}
-                };
-            }
-            else if (validateFileSizeResponse["status"] == false)
+            //if (validateExtResponse["status"] == false)
+            //{
+            //    response = new Dictionary<string, string>
+            //    {
+            //        {"error", "Invalid document extention. [allowed types: pdf/doc/docx/csv/png/jpg/jpeg/txt]"}
+            //    };
+            //}
+            if (validateFileSizeResponse["status"] == false)
             {
                 response = new Dictionary<string, string>
                 {
