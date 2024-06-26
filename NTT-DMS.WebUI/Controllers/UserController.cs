@@ -38,11 +38,17 @@ namespace NTT_DMS.Controllers
         /*
          * USER EDIT FORM
          */
+        
         public IActionResult Edit(int[] userId)
         {
-            if(userId.Length != 1)
+            if (userId.Length == 0)
             {
-                TempData["error"] = "Please select one user to edit!";
+                TempData["error"] = "Please select user to edit!";
+                return RedirectToAction("Index");
+            }
+            if (userId.Length != 1)
+            {
+                TempData["error"] = "Please select only one user to edit!";
                 return RedirectToAction("Index");
             }
             var user = _userService.GetUser(userId[0]);
@@ -69,7 +75,7 @@ namespace NTT_DMS.Controllers
             else
             {
                 TempData["error"] = "Error occurred while editing user";
-                return View();
+                return RedirectToAction("Index");
             }
         }
 
@@ -99,6 +105,11 @@ namespace NTT_DMS.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> Delete(int[] userId)
         {
+            if (userId.Length == 0)
+            {
+                TempData["error"] = "Please select user to delete!";
+                return RedirectToAction("Index");
+            }
             var email = HttpContext.Session.GetString("UserEmail");
             var status = await _userService.Delete(userId, email);
             if (status)

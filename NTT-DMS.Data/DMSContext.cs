@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace NTT_DMS.Data
 {
-    public class DMSContext: DbContext
+    public class DMSContext: IdentityDbContext
     {
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -23,6 +23,8 @@ namespace NTT_DMS.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Categories)
                 .WithOne(c => c.Users)

@@ -78,11 +78,11 @@ namespace NTT_DMS.Controllers
                 var documentUploadResponse = await _documentService.Upload(file, pathRoot, document, email);
                 if (documentUploadResponse.ContainsKey("error"))
                 {
-                    ViewBag.error = documentUploadResponse["error"];
+                    TempData["Error"] = documentUploadResponse["error"];
                 }
                 else
                 {
-                    ViewBag.success = documentUploadResponse["success"];
+                    TempData["success"] = documentUploadResponse["success"];
                 }
                 return View();
             }

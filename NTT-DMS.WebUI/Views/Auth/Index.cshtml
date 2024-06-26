@@ -1,4 +1,5 @@
-﻿@{
+﻿@model NTT_DMS.Data.UserLogin
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -13,14 +14,19 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+    <!-- Theme style -->
      @* <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">  *@
      @* <link rel="stylesheet" href="~/adminlte/plugins/iCheck/square/blue.css"> *@
-     <link rel="stylesheet" href="~/lib/dist/css/bootstrap.css">
-     <link rel="stylesheet" href="~/adminlte/plugins/loginPage/css/loginPage.css">
+     @* <link rel="stylesheet" href="~/lib/dist/css/bootstrap.css"> *@
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/adminlte/plugins/loginPage/css/loginPage.css">
 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <!-- toaster -->
+    <link rel="stylesheet" href="~/adminlte/plugins/toastr/Toastr.css">
 </head>
 <body class="hold-transition login-page">
     <div class="background">
@@ -29,13 +35,25 @@
     </div>
     <form action="/Auth/Login" method="post">
         <h3>NTT DMS</h3>
-        <p class="login-box-msg" style="color:red;">@TempData["error"]</p>
+        @* <p class="login-box-msg" style="color:red;">@TempData["error"]</p> *@
+        <partial name="_Notification"></partial>
 
-        <label for="Email">Email</label>
+        @* <label for="Email">Email</label>
         <input type="text" class="form-control" name="UserEmail" placeholder=" Email">
 
         <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" placeholder="Password">
+        <input type="password" class="form-control" name="password" placeholder="Password">*@
+
+        <label for="email">Email</label>
+        <div class="form-group has-feedback col">
+            <input asp-for="UserEmail" class="form-control" placeholder="Email" />
+            @* <span asp-validation-for="UserEmail" class="text-danger"></span> *@
+        </div>
+        <label for="password">Password</label>
+        <div class="form-group has-feedback col">
+            <input type="password" asp-for="password" class="form-control" placeholder="Password" />
+            @* <span asp-validation-for="password" class="text-danger"></span> *@
+        </div>
 
         <div class="social">
             <a style="font-weight:600" href="~/Auth/Signup">Sign up</a>
@@ -45,9 +63,12 @@
     <!-- /.login-box -->
     <!-- jQuery -->
     <!-- Bootstrap 4 -->
-    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- iCheck -->
-
+    @* <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> *@
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="~/adminlte/plugins/toastr/jquery.Toaster.js"></script>
+    <script src="~/adminlte/dist/js/adminlte.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 </body>
 </html>
 

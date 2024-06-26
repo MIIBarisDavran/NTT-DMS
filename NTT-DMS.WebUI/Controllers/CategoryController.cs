@@ -46,11 +46,12 @@ namespace NTT_DMS.Controllers
             var status = await _categoryService.CreateCategory(category, email);
             if (status)
             {
-                ViewBag.success = "Created successfully";
+                TempData["success"] = "Category Created successfully";
             }
             else
             {
-                ViewBag.error = "Something went wrong.";
+                TempData["error"] = "Something went wrong.";
+
             }
             return View();
         }
@@ -69,7 +70,7 @@ namespace NTT_DMS.Controllers
             }
             else
             {
-                TempData["Error"] = "Error Occurred";
+                TempData["error"] = "Error Occurred";
             }
             return RedirectToAction("Index");
         }
