@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NttDocumentManagement.Models
+namespace NTT_DMS.Data
 {
     public class DocumentViewModel
     {

@@ -1,0 +1,129 @@
+﻿@model PaginatedList<NTT_DMS.Data.Log>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Logs</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">Logs</li>
+
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<form action="/Logger/Index" method="get">
+     <div class="margin-" style="display:flex;margin-bottom:20px;"> 
+            <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Logs.." />
+            <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" /> 
+     </div>  
+</form>
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Failed!</strong> @TempData["error"].
+    </div>
+}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LogID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].EventType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].TableName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].ActionID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].RecordID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].ColumnName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OriginalValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].NewValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Created_by)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Created_date)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LogID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TableName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActionID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColumnName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OriginalValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created_by)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created_date)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+</body>
+</html>

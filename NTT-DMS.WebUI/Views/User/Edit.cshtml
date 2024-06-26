@@ -1,0 +1,76 @@
+﻿@model NTT_DMS.Data.UserViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input[type=text], input[type=password], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+</style>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">User </li>
+                    <li class="breadcrumb-item active">Create </li>
+
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="EditUser" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col" hidden="hidden">
+                    <input asp-for="UserId" class="form-control" value="@Model.UserId" placeholder="" />
+                </div>
+                <div class="col">
+                    <input asp-for="UserEmail" class="form-control" value="@Model.UserEmail" placeholder="Email" />
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="UserName" class="form-control" value="@Model.UserName" placeholder="Name" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <input type="password" asp-for="password" class="form-control" value="" placeholder="Password" />
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <select asp-for="UserRole" value="@Model.UserRole" asp-items="@Model.Roles" class="form-control"></select>
+                    <span asp-validation-for="UserRole" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <a href="/User/Index" class="btn btn-danger">Back</a>
+                <input type="submit" value="Edit" class="btn btn-info btn-lg" style="float:right;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

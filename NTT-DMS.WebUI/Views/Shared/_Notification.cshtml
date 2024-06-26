@@ -1,0 +1,14 @@
+﻿@if (TempData["error"] != null)
+{
+    <script src="~/adminlte/plugins/toastr/jquery.Toaster.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["error"]');
+    </script>
+}
+@if (TempData["success"] != null)
+{
+    <script src="~/adminlte/plugins/toastr/jquery.Toaster.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData["success"]');
+    </script>
+}

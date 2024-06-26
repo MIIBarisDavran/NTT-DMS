@@ -1,0 +1,151 @@
+﻿@model PaginatedList<NTT_DMS.Data.DocumentViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .document-preview-container {
+        margin: 20px;
+    }
+
+    .preview-area {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
+        height: 500px;
+        overflow: auto;
+    }
+
+        .preview-area img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .preview-area iframe {
+            width: 100%;
+            height: 100%;
+        }
+</style>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">Documents </li>
+
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<form action="/Document/Index" method="get">
+    <div class="margin-" style="display:flex;margin-bottom:20px;">
+        <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Documents.." />
+        <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" />
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.success))
+{
+    <div class="alert alert-success" role="alert">
+        <strong>Success!</strong> @ViewBag.success.
+    </div>
+}
+<form id="idDocumentForm" method="post">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="5%">
+                        <div class="form-check">
+                            <input type="checkbox" name="documentIds" id="documentIds" value="@item.DocumentId" class="form-check-input" />
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td width="8%">
+                        <button type="button" class="btn btn-info" onclick="previewDocument('@Url.Action("GetDocument", "Document", new { filePath = item.DocumentPath })')">Preview</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal-footer">
+        <p>
+            <button type="button" class="btn btn-info" onclick=" submitForm('/Document/DownloadSelected')">Download</button>
+            <button type="button" class="btn btn-danger" onclick="submitForm('/Document/Delete')">Delete</button>
+        </p>
+    </div>
+</form>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div class="modal fade" id="documentPreviewModal" tabindex="-1" aria-labelledby="documentPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="documentPreviewModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewArea" class="preview-area"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/adminlte/plugins/DocumentPreview/DocumentPreview.js"></script>
+    <script>
+        function submitForm(action) {
+            var form = document.getElementById('idDocumentForm');
+            form.action = action;
+            form.submit();
+        }
+    </script>
+}

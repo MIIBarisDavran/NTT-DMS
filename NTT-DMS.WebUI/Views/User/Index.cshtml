@@ -1,0 +1,120 @@
+﻿@model PaginatedList<NTT_DMS.Data.User>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">User</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">User</li>
+
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<form action="/User/Index" method="get">
+    <div class="margin-" style="display:flex;margin-bottom:20px;">
+        <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Users.." />
+        <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" />
+    </div>
+</form>
+<form id="idUserForm" method="post">
+    @if (!string.IsNullOrEmpty(ViewBag.success))
+    {
+        <div class="alert alert-success" role="alert">
+            <strong>Success!</strong> @ViewBag.success.
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="alert alert-warning" role="alert">
+            <strong>Failed!</strong> @ViewBag.error.
+        </div>
+    }
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UserEmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UserName)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UserRole)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="5%">
+                        <div class="form-check">
+                            <input type="checkbox" name="userId" id="userId" value="@item.UserId" class="form-check-input" />
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserEmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserRole)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal-footer">
+        <p>
+            <button type="button" class="btn btn-info" onclick=" submitForm('/User/Edit')">Edit</button>
+            <button type="button" class="btn btn-danger" onclick="submitForm('/User/Delete')">Delete</button>
+        </p>
+    </div>
+</form>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+@section Scripts {
+    <script>
+        function submitForm(action) {
+            var form = document.getElementById('idUserForm');
+            form.action = action;
+            form.submit();
+        };
+    </script>
+}
