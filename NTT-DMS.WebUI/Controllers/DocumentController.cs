@@ -198,5 +198,36 @@ namespace NTT_DMS.Controllers
                 throw;
             }
         }
+        [HttpGet("GetDocument")]
+        public async Task<IActionResult> GetDocument(string filePath)
+        {
+            try
+            {
+                var absolutePath = Path.Combine(_appEnvironment.WebRootPath, filePath);
+                if (!System.IO.File.Exists(absolutePath))
+                {
+                    return NotFound();
+                }
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+
+                var contentTypeProvider = new FileExtensionContentTypeProvider();
+                if (!contentTypeProvider.TryGetContentType(filePath, out string contentType))
+                {
+                    contentType = "application/octet-stream";
+                }
+
+                return File(memory, contentType, Path.GetFileName(filePath));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error returning document file");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

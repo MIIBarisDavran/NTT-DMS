@@ -166,7 +166,7 @@ namespace NTT_DMS.Service
                 string pathRoot = _appEnvironment.WebRootPath;
                 foreach (var item in documents)
                 {
-                    var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", item.DocumentName);
+                    var path = Path.Combine(_appEnvironment.WebRootPath, "Documents", item.UsersUserId.ToString() ,item.DocumentName);
                     if (File.Exists(path))
                     {
                         File.Delete(path);
@@ -185,7 +185,6 @@ namespace NTT_DMS.Service
                 return false;
             }
         }
-
 
         /* 
          * GET DOCUMENT PATH
