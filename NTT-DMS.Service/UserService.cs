@@ -101,11 +101,13 @@ namespace NTT_DMS.Service
             {
                 return false;
             }
-            User item = new User();
-            item.UserName = user.UserName;
-            item.UserEmail = user.UserEmail;
-            item.password = user.password;
-            item.UserRole = user.UserRole;
+            User item = new User()
+            {
+                UserName = user.UserName,
+                UserEmail = user.UserEmail,
+                password = user.password,
+                UserRole = user.UserRole,
+            };
             try
             {
                 _context.Users.Add(item);
@@ -123,30 +125,24 @@ namespace NTT_DMS.Service
          * DELETE USER
          */
         [HttpPost]
-        public async Task<bool> Delete(int[] userId, string userEmail)
+        public async Task<bool> Delete(int[] userIds, string userEmail)
         {
-            bool status = true;
-            if (userId.IsNullOrEmpty())
+            if (userIds.Length == 0)
             {
-                status = false;
-                return status;
+                return false;
             }
-            foreach (var item in userId)
+            try
             {
-                var i = _context.Users.Find(item);
-                try
-                {
-                    _context.Users.Remove(i);
-                    await _context.SaveChangesAsync(userEmail);
-                }
-                catch (Exception ex)
-                {
-                    var exp = ex;
-                    status = false;
-                    break;
-                }
+                var _user = _context.Users.Where(o => userIds.Contains(o.UserId)).ToList();
+                _context.Users.RemoveRange(_user);
+                await _context.SaveChangesAsync(userEmail);
+                return true;
             }
-            return status;
+            catch (Exception ex)
+            {
+                var exp = ex;
+                return false;
+            }
 
         }
 

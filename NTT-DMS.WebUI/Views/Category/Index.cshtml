@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NTT_DMS.Data.Category>
+﻿@model PaginatedList<NTT_DMS.Data.Category>
 
 
 @{
@@ -22,30 +22,73 @@
 </div>
 
 
-    <strong>@TempData["success"]</strong>
+    @* <strong>@TempData["success"]</strong>
 
     <strong style="color:red;">@TempData["error"]</strong>
+ *@
+
+<form action="/Category/Index" method="get">
+    <div class="margin-" style="display:flex;margin-bottom:20px;">
+        <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Categories.." />
+        <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" />
+    </div>
+</form>
+
+<form id="idCategoryForm" method="post">
 <table class="table table-bordered table-striped">
 
         <thead>
             <tr>
+                <th></th>
                 <th>ID</th>
                 <th>Name</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var i in Model)
             {
                 <tr>
+                    <td width="5%">
+                        <div class="form-check">
+                            <input type="checkbox" name="categoryIds" id="categoryIds" value="@i.CategoryId" class="form-check-input" />
+                        </div>
+                    </td>
                     <td>@i.CategoryId</td>
                     <td>@i.CategoryName</td>
-                    <td class="justify-content-center align-items-center" style="display:flex;">
-                       
-                        <a href="/Category/Delete/@i.CategoryId" class="btn btn-danger">delete</a>
-
-                    </td>
                 </tr>
             }
         </tbody>
     </table>
+    <div class="modal-footer">
+        <p>
+            <button type="button" class="btn btn-info" onclick=" submitForm('/Document/Edit')">Edit</button>
+            <button type="button" class="btn btn-danger" onclick="submitForm('/Category/Delete')">Delete</button>
+        </p>
+    </div>
+</form>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+@section Scripts {
+    <script src="~/adminlte/plugins/DocumentPreview/DocumentPreview.js"></script>
+    <script>
+        function submitForm(action) {
+            var form = document.getElementById('idCategoryForm');
+            form.action = action;
+            form.submit();
+        }
+    </script>
+}

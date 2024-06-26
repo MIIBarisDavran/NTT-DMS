@@ -1,4 +1,5 @@
-﻿using NTT_DMS.Data;
+﻿using Microsoft.IdentityModel.Tokens;
+using NTT_DMS.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,18 @@ namespace NTT_DMS.Service
             return categories;
         }
 
+        public List<Category> GetAllFiltered(string email, string search)
+        {
+            var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
+            var categories = _context.Categories.Where(x => x.Users.UserId == user.UserId).ToList();
+            if (!search.IsNullOrEmpty())
+            {
+                return categories.Where(o => o.CategoryName.Contains(search)).ToList();
+            }
+            _context.CustomLogAction(email, "Get Category", "Category", "*ALL");
+            return categories;
+        }
+
         /*
          * CREATE CATEGORY
          */
@@ -36,10 +49,11 @@ namespace NTT_DMS.Service
                 return false;
             }
             var user = _context.Users.Where(x => x.UserEmail == email).FirstOrDefault();
-            Category item = new Category();
-            item.CategoryName = Cat.CategoryName;
-            item.UsersUserId = user.UserId;
-
+            Category item = new Category()
+            {
+                CategoryName = Cat.CategoryName,
+                UsersUserId = user.UserId,
+            };
             try
             {
                 _context.Categories.Add(item);
@@ -56,12 +70,12 @@ namespace NTT_DMS.Service
         /*
          * DELETE CATEGORY
          */
-        public async Task<bool> DeleteCategory(int id, string email)
+        public async Task<bool> DeleteCategory(int[] categoryIds, string email)
         {
-            var item = _context.Categories.Find(id);
+            var item = _context.Categories.Where(o => categoryIds.Contains(o.CategoryId)).ToList();
             try
             {
-                _context.Categories.Remove(item);
+                _context.Categories.RemoveRange(item);
                 await _context.SaveChangesAsync(email);
                 return true;
             }

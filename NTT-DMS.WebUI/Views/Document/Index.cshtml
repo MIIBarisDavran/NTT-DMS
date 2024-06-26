@@ -56,47 +56,49 @@
 }
 <form id="idDocumentForm" method="post">
     <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-            </th>
-            <th>
-                Id
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+        <thead>
             <tr>
-                <td>
-                   <input type="checkbox" name="documentIds" id="documentIds" value="@item.DocumentId"/>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentName)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryName)
-                </td>
-                <td width="8%" >
-                    <button type="button" class="btn btn-info" onclick="previewDocument('@Url.Action("GetDocument", "Document", new { filePath = item.DocumentPath })')">Preview</button>
-                </td>
+                <th>
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="5%">
+                        <div class="form-check">
+                            <input type="checkbox" name="documentIds" id="documentIds" value="@item.DocumentId" class="form-check-input" />
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td width="8%">
+                        <button type="button" class="btn btn-info" onclick="previewDocument('@Url.Action("GetDocument", "Document", new { filePath = item.DocumentPath })')">Preview</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     <div class="modal-footer">
         <p>
             <button type="button" class="btn btn-info" onclick=" submitForm('/Document/DownloadSelected')">Download</button>
