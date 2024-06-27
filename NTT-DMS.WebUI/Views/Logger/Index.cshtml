@@ -27,7 +27,7 @@
 </div>
 <form action="/Logger/Index" method="get">
      <div class="margin-" style="display:flex;margin-bottom:20px;"> 
-            <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Logs.." />
+            <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Logs.." value="@Context.Request.Query["str"]" />
             <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" /> 
      </div>  
 </form>
@@ -95,7 +95,7 @@
                         @Html.DisplayFor(modelItem => item.ColumnName)
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
                             Show/Hide
                         </button>
                         <div class="collapse" id="originalValueCollapse@item.LogID">
@@ -105,7 +105,7 @@
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#newValueCollapse@item.LogID" aria-expanded="false" aria-controls="newValueCollapse@item.LogID">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#newValueCollapse@item.LogID" aria-expanded="false" aria-controls="newValueCollapse@item.LogID">
                             Show/Hide
                         </button>
                         <div class="collapse" id="newValueCollapse@item.LogID">
@@ -132,11 +132,13 @@
 
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-str="@Context.Request.Query["str"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-str="@Context.Request.Query["str"]"
    class="btn btn-default @nextDisabled">
     Next
 </a>
