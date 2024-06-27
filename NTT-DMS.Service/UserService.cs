@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace NTT_DMS.Service
 {
@@ -16,11 +17,13 @@ namespace NTT_DMS.Service
     {
         private readonly DMSContext _context;
         private readonly IConfiguration _config;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(DMSContext context, IConfiguration config)
+        public UserService(DMSContext context, IConfiguration config, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _config = config;
+            _passwordHasher = passwordHasher;
         }
 
         /*
@@ -105,9 +108,9 @@ namespace NTT_DMS.Service
             {
                 UserName = user.UserName,
                 UserEmail = user.UserEmail,
-                password = user.password,
                 UserRole = user.UserRole,
             };
+            item.password = _passwordHasher.HashPassword(item, item.password);
             try
             {
                 _context.Users.Add(item);

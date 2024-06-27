@@ -56,6 +56,8 @@ namespace NTT_DMS.WebUI
             new PhysicalFileProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
+            services.AddIdentityCore<User>(options => { });
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<AuthService>();
             services.AddScoped<DocumentService>();
             services.AddScoped<UserService>();

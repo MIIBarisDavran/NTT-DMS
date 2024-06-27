@@ -6,15 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using NTT_DMS.Data;
 using Humanizer;
+using Microsoft.AspNetCore.Identity;
 
 namespace NTT_DMS.Service
 {
     public class AuthService
     {
         private readonly DMSContext _context;
-        public AuthService(DMSContext db)
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public AuthService(DMSContext db, IPasswordHasher<User> passwordHasher)
         {
             _context = db;
+            _passwordHasher = passwordHasher;
         }
 
         /*

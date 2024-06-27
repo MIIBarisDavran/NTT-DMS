@@ -4,6 +4,7 @@ using NTT_DMS.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing.Printing;
+using Microsoft.AspNetCore.Identity;
 
 namespace NTT_DMS.Controllers
 {
@@ -11,9 +12,9 @@ namespace NTT_DMS.Controllers
     public class UserController : Controller
     {
         private readonly UserService _userService;
-        public UserController(DMSContext _context, IConfiguration _config)
+        public UserController(DMSContext _context, IConfiguration _config, IPasswordHasher<User> passwordHasher)
         {
-            _userService = new UserService(_context, _config);
+            _userService = new UserService(_context, _config, passwordHasher);
         }
 
         /*
