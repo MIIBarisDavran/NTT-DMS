@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
 </head>
 <body>
 <div class="content-header">
@@ -94,10 +95,24 @@
                         @Html.DisplayFor(modelItem => item.ColumnName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.OriginalValue)
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
+                            Show/Hide
+                        </button>
+                        <div class="collapse" id="originalValueCollapse@item.LogID">
+                            <div class="card card-body">
+                                @Html.DisplayFor(modelItem => item.OriginalValue)
+                            </div>
+                        </div>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NewValue)
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#newValueCollapse@item.LogID" aria-expanded="false" aria-controls="newValueCollapse@item.LogID">
+                            Show/Hide
+                        </button>
+                        <div class="collapse" id="newValueCollapse@item.LogID">
+                            <div class="card card-body">
+                                @Html.DisplayFor(modelItem => item.NewValue)
+                            </div>
+                        </div>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Created_by)
