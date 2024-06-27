@@ -1,0 +1,63 @@
+﻿@model NTT_DMS.Data.CategoryViewModel;
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Category</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">Category </li>
+                    <li class="breadcrumb-item">Create </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="EditCategory" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col" hidden="hidden">
+                    <input asp-for="CategoryId" class="form-control" value="@Model.CategoryId" placeholder="" />
+                </div>
+                <div class="col" hidden="hidden">
+                    <input asp-for="UsersUserId" class="form-control" value="@Model.UsersUserId" placeholder="" />
+                </div>
+                <div class="col">
+                    <input asp-for="CategoryName" class="form-control" value="@Model.CategoryName" placeholder="Category Name" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <a href="/Category/Index" class="btn btn-danger">Back</a>
+                    <input type="submit" value="Edit" class="btn btn-info" />
+
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

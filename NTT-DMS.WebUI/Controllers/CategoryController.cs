@@ -36,6 +36,42 @@ namespace NTT_DMS.Controllers
             return View();
         }
 
+        public IActionResult Edit(int[] categoryIds)
+        {
+            if (categoryIds.Length == 0)
+            {
+                TempData["error"] = "Please select category to edit!";
+                return RedirectToAction("Index");
+            }
+            if (categoryIds.Length != 1)
+            {
+                TempData["error"] = "Please select only one category to edit!";
+                return RedirectToAction("Index");
+            }
+            var user = _categoryService.GetCategory(categoryIds[0]);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditCategory(CategoryViewModel categoryModel)
+        {
+            var email = HttpContext.Session.GetString("UserEmail");
+            var status = await _categoryService.UpdateCategory(categoryModel, email);
+            if (status)
+            {
+                TempData["success"] = "Category edited successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["error"] = "Error occurred while editing category";
+                return RedirectToAction("Index");
+            }
+        }
+
         /*
          * NEW CATEGORY CREATE
          */

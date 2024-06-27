@@ -23,22 +23,18 @@ namespace NTT_DMS.Service
         /*
          * USER LOGIN CREDENTIAL CHECK
          */
-        public List<User> CheckCredential(UserLogin user)
+        public User CheckCredential(UserLogin user)
         {
-            var _user = _context.Users.FirstOrDefault(x => x.UserEmail == user.UserEmail
-             && x.password == user.password);
-            if (_user == null)
+            var _user = _context.Users.FirstOrDefault(u => u.UserEmail == user.UserEmail);
+            if (_user != null)
             {
-                return null;
+                var result = _passwordHasher.VerifyHashedPassword(_user, _user.password, user.password);
+                if (result == PasswordVerificationResult.Success)
+                {
+                    return _user;
+                }
             }
-            _context.CustomLogAction(user.UserEmail, "Login", "User", "Email");
-            return _context.Users.Where(x => x.UserEmail == _user.UserEmail).Select(x => new User
-            {
-                UserId = x.UserId,
-                UserName = x.UserName,
-                UserEmail = x.UserEmail,
-                UserRole = x.UserRole
-            }).ToList();
+            return null;
         }
 
 
@@ -51,11 +47,14 @@ namespace NTT_DMS.Service
             {
                 return false;
             }
-            User item = new User();
-            item.UserName = user.UserName;
-            item.UserEmail = user.UserEmail;
-            item.password = user.password;
-            item.UserRole = "User";
+            User item = new User()
+            {
+                UserName = user.UserName,
+                UserEmail = user.UserEmail,
+                password = user.password,
+                UserRole = "User",
+            };
+            item.password = _passwordHasher.HashPassword(item, item.password);
             try
             {
                 _context.Users.Add(item);

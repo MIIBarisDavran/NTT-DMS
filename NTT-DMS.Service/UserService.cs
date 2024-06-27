@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace NTT_DMS.Service
 {
@@ -29,6 +30,7 @@ namespace NTT_DMS.Service
         /*
          * GET LIST OF USERS
          */
+        [HttpGet]
         public List<User> GetAll(string str)
         {
             var _users = _context.Users.ToList();
@@ -39,8 +41,7 @@ namespace NTT_DMS.Service
             }
             return _users;
         }
-
-        [HttpPost]
+        [HttpGet]
         public UserViewModel GetUser(int id)
         {
             var user = _context.Users.FirstOrDefault(x => x.UserId == id);
@@ -66,6 +67,7 @@ namespace NTT_DMS.Service
         /*
          * CREATE USER
          */
+        [HttpPost]
         public async Task<bool> UpdateUser(UserViewModel user, string userEmail)
         {
             if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.UserEmail) || string.IsNullOrWhiteSpace(user.password)
@@ -73,17 +75,17 @@ namespace NTT_DMS.Service
             {
                 return false;
             }
-            User item = new User
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == user.UserId);
+            if (existingUser == null)
             {
-                UserId = user.UserId,
-                UserName = user.UserName,
-                UserEmail = user.UserEmail,
-                password = user.password,
-                UserRole = user.UserRole,
-            };
+                return false; 
+            }
             try
             {
-                _context.Users.Update(item);
+                existingUser.UserName = user.UserName;
+                existingUser.UserEmail = user.UserEmail;
+                existingUser.UserRole = user.UserRole;
+                existingUser.password = _passwordHasher.HashPassword(existingUser, user.password);
                 await _context.SaveChangesAsync(userEmail);
                 return true;
             }
@@ -97,6 +99,7 @@ namespace NTT_DMS.Service
         /*
          * CREATE USER
          */
+        [HttpPost]
         public async Task<bool> Create(User user, string userEmail)
         {
             if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.UserEmail) || string.IsNullOrWhiteSpace(user.password)
@@ -108,6 +111,7 @@ namespace NTT_DMS.Service
             {
                 UserName = user.UserName,
                 UserEmail = user.UserEmail,
+                password = user.password,
                 UserRole = user.UserRole,
             };
             item.password = _passwordHasher.HashPassword(item, item.password);
