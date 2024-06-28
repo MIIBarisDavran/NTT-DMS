@@ -77,3 +77,19 @@ function showValue(value) {
     document.getElementById('previewArea').innerText = JSON.stringify(value);
     $('#valueModal').modal('show');
 }
+
+function showOriginalValue(button) {
+    var value = button.getAttribute('data-original-value');
+    var previewArea = document.getElementById('previewArea');
+    previewArea.innerHTML = ''; // Clear previous content
+    previewArea.innerText = value;
+    $('#valueModal').modal('show');
+}
+
+function showNewValue(button) {
+    var value = button.getAttribute('data-new-value');
+    var previewArea = document.getElementById('previewArea');
+    previewArea.innerHTML = ''; // Clear previous content
+    previewArea.innerText = value;
+    $('#valueModal').modal('show');
+}

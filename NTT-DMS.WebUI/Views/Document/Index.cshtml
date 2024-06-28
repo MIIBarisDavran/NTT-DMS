@@ -102,7 +102,7 @@
     </table>
     <div class="modal-footer">
         <p>
-            <button type="button" class="btn btn-info" onclick=" submitForm('/Document/DownloadSelected')">Download</button>
+            <button type="button" class="btn btn-info" onclick=" confirmDownload('/Document/DownloadSelected')">Download</button>
             <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
         </p>
     </div>
@@ -177,6 +177,16 @@
             } else {
                 var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
                 deleteModal.show();
+            }
+        }
+        function confirmDownload(action) {
+            var checkboxes = document.querySelectorAll('input[name="documentIds"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one document to download.');
+            } else {
+                var form = document.getElementById('idDocumentForm');
+                form.action = action;
+                form.submit();
             }
         }
     </script>

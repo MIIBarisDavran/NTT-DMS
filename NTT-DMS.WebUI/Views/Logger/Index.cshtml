@@ -29,7 +29,6 @@
 </style>
 <html>
 <head>
-    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
 </head>
 <body>
 <div class="content-header">
@@ -118,10 +117,10 @@
                         @Html.DisplayFor(modelItem => item.ColumnName)
                     </td>
                     <td>
-                        @if (item.OriginalValue != null && item.OriginalValue.Length > 40)
+                        @if (item.OriginalValue != null && item.OriginalValue.Length > 22)
                         {
-                            <span>@item.OriginalValue.Substring(0, 40)</span>
-                            <button class="btn btn-link" type="button" onclick="showValue(@Html.DisplayFor(modelItem => item.OriginalValue))">
+                            <span>@item.OriginalValue.Substring(0, 22)</span>
+                            <button class="btn btn-link" type="button" data-original-value="@item.OriginalValue" onclick="showOriginalValue(this)">
                                 Show more
                             </button>
                         }
@@ -131,10 +130,10 @@
                         }
                     </td>
                     <td>
-                        @if (item.NewValue != null && item.NewValue.Length > 40)
+                        @if (item.NewValue != null && item.NewValue.Length > 22)
                         {
-                            <span>@item.NewValue.Substring(0, 40)</span>
-                            <button class="btn btn-link" type="button" onclick="showValue(@Html.DisplayFor(modelItem => item.NewValue))">
+                            <span>@item.NewValue.Substring(0, 22)</span>
+                            <button class="btn btn-link" type="button" data-new-value="@item.NewValue" onclick="showNewValue(this)">
                                 Show more
                             </button>
                         }
