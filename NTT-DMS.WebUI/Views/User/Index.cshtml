@@ -87,7 +87,7 @@
     </table>
     <div class="modal-footer">
         <p>
-            <button type="button" class="btn btn-info" onclick=" submitForm('/User/Edit')">Edit</button>
+            <button type="button" class="btn btn-info" onclick="confirmEdit('/User/Edit')">Edit</button>
             <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
         </p>
     </div>
@@ -143,6 +143,18 @@
             } else {
                 var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
                 deleteModal.show();
+            }
+        }
+        function confirmEdit(action) {
+            var checkboxes = document.querySelectorAll('input[name="userId"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one user to edit.');
+            } else if (checkboxes.length > 1) {
+                alert('Please select only one user to edit.')
+            } else {
+                var form = document.getElementById('idUserForm');
+                form.action = action;
+                form.submit();
             }
         }
     </script>
