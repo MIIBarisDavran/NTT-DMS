@@ -53,7 +53,7 @@ namespace NTT_DMS.Service
             var categories = _context.Categories.Where(x => x.Users.UserId == user.UserId).ToList();
             if (!search.IsNullOrEmpty())
             {
-                return categories.Where(o => o.CategoryName.Contains(search)).ToList();
+                return categories.Where(o => o.CategoryName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             _context.CustomLogAction(email, "Get Category", "Category", "*ALL");
             return categories;

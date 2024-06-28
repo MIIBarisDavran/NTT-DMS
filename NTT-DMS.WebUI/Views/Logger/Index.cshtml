@@ -124,14 +124,6 @@
                             <button class="btn btn-link" type="button" onclick="showValue(@Html.DisplayFor(modelItem => item.OriginalValue))">
                                 Show more
                             </button>
-                            @* <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
-                                Show more
-                            </button>
-                            <div class="collapse" id="originalValueCollapse@item.LogID">
-                                <div class="card card-body">
-                                    @Html.DisplayFor(modelItem => item.OriginalValue)
-                                </div>
-                            </div> *@
                         }
                         else
                         {
@@ -200,6 +192,5 @@
 
 
 @section scripts {
-    @* <script src="~/adminlte/plugins/popper/min/popper.min.js"></script> *@
     <script src="~/adminlte/plugins/DocumentPreview/DocumentPreview.js"></script>
 }

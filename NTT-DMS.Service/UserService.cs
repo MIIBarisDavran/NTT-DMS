@@ -36,7 +36,7 @@ namespace NTT_DMS.Service
             var _users = _context.Users.ToList();
             if (!string.IsNullOrEmpty(str))
             {
-                var searchedItems = _users.Where(x => x.UserEmail.Contains(str) || x.UserName.Contains(str) || x.UserRole.Contains(str)).ToList();
+                var searchedItems = _users.Where(x => x.UserEmail.Contains(str, StringComparison.OrdinalIgnoreCase) || x.UserName.Contains(str, StringComparison.OrdinalIgnoreCase) || x.UserRole.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList();
                 return searchedItems;
             }
             return _users;
