@@ -70,3 +70,10 @@
             console.error('Error:', error);
         });
 }
+
+function showValue(value) {
+    var previewArea = document.getElementById('previewArea');
+    previewArea.innerHTML = ''; // Clear previous content
+    document.getElementById('previewArea').innerText = JSON.stringify(value);
+    $('#valueModal').modal('show');
+}

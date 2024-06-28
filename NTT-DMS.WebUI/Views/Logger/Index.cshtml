@@ -4,6 +4,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
+<style>
+    .document-preview-container {
+        margin: 20px;
+    }
+
+    .preview-area {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
+        height: 500px;
+        overflow: auto;
+    }
+
+        .preview-area img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .preview-area iframe {
+            width: 100%;
+            height: 100%;
+        }
+</style>
 <html>
 <head>
     @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
@@ -95,24 +118,38 @@
                         @Html.DisplayFor(modelItem => item.ColumnName)
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
-                            Show/Hide
-                        </button>
-                        <div class="collapse" id="originalValueCollapse@item.LogID">
-                            <div class="card card-body">
-                                @Html.DisplayFor(modelItem => item.OriginalValue)
-                            </div>
-                        </div>
+                        @if (item.OriginalValue != null && item.OriginalValue.Length > 40)
+                        {
+                            <span>@item.OriginalValue.Substring(0, 40)</span>
+                            <button class="btn btn-link" type="button" onclick="showValue(@Html.DisplayFor(modelItem => item.OriginalValue))">
+                                Show more
+                            </button>
+                            @* <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#originalValueCollapse@item.LogID" aria-expanded="false" aria-controls="originalValueCollapse@item.LogID">
+                                Show more
+                            </button>
+                            <div class="collapse" id="originalValueCollapse@item.LogID">
+                                <div class="card card-body">
+                                    @Html.DisplayFor(modelItem => item.OriginalValue)
+                                </div>
+                            </div> *@
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.OriginalValue)
+                        }
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#newValueCollapse@item.LogID" aria-expanded="false" aria-controls="newValueCollapse@item.LogID">
-                            Show/Hide
-                        </button>
-                        <div class="collapse" id="newValueCollapse@item.LogID">
-                            <div class="card card-body">
-                                @Html.DisplayFor(modelItem => item.NewValue)
-                            </div>
-                        </div>
+                        @if (item.NewValue != null && item.NewValue.Length > 40)
+                        {
+                            <span>@item.NewValue.Substring(0, 40)</span>
+                            <button class="btn btn-link" type="button" onclick="showValue(@Html.DisplayFor(modelItem => item.NewValue))">
+                                Show more
+                            </button>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.NewValue)
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Created_by)
@@ -142,5 +179,27 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
+    <div class="modal fade" id="valueModal" tabindex="-1" aria-labelledby="valueModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="valueModalLabel">Value Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="previewArea" class="preview-area"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+
+
+@section scripts {
+    @* <script src="~/adminlte/plugins/popper/min/popper.min.js"></script> *@
+    <script src="~/adminlte/plugins/DocumentPreview/DocumentPreview.js"></script>
+}
