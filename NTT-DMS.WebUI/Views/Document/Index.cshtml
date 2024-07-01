@@ -43,7 +43,8 @@
 </div>
 <form action="/Document/Index" method="get">
     <div class="margin-" style="display:flex;margin-bottom:20px;">
-        <input type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Documents.." />
+        @* <input id="idSearchDocuments" type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Documents.." /> *@
+        <input id="idSearchDocuments" type="text" class="form-control" name="str" style="width:200px;" placeholder="Search Documents.." value="@Context.Request.Query["str"]" />
         <input type="submit" value="Search" class="btn btn-secondary my-2 my-sm-0" style="margin-left:10px;" />
     </div>
 </form>
@@ -101,8 +102,8 @@
     </table>
     <div class="modal-footer">
         <p>
-            <button type="button" class="btn btn-info" onclick=" submitForm('/Document/DownloadSelected')">Download</button>
-            <button type="button" class="btn btn-danger" onclick="submitForm('/Document/Delete')">Delete</button>
+            <button type="button" class="btn btn-info" onclick=" confirmDownload('/Document/DownloadSelected')">Download</button>
+            <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
         </p>
     </div>
 </form>
@@ -113,11 +114,13 @@
 
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-str="@Context.Request.Query["str"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-str="@Context.Request.Query["str"]"
    class="btn btn-default @nextDisabled">
     Next
 </a>
@@ -139,13 +142,52 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the selected documents?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="submitForm('/Document/Delete')">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="~/adminlte/plugins/DocumentPreview/DocumentPreview.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <script>
         function submitForm(action) {
             var form = document.getElementById('idDocumentForm');
             form.action = action;
             form.submit();
+        }
+        function confirmDelete() {
+            var checkboxes = document.querySelectorAll('input[name="documentIds"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one document to delete.');
+            } else {
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                deleteModal.show();
+            }
+        }
+        function confirmDownload(action) {
+            var checkboxes = document.querySelectorAll('input[name="documentIds"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one document to download.');
+            } else {
+                var form = document.getElementById('idDocumentForm');
+                form.action = action;
+                form.submit();
+            }
         }
     </script>
 }

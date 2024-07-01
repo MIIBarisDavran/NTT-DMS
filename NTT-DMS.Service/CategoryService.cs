@@ -1,10 +1,14 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using NTT_DMS.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace NTT_DMS.Service
 {
@@ -26,6 +30,22 @@ namespace NTT_DMS.Service
             _context.CustomLogAction(email, "Get Category", "Category", "*ALL");
             return categories;
         }
+        [HttpGet]
+        public CategoryViewModel GetCategory(int id)
+        {
+            var category = _context.Categories.FirstOrDefault(x => x.CategoryId == id);
+            var categoryViewModel = new CategoryViewModel
+            {
+                CategoryId = category.CategoryId,
+                CategoryName = category.CategoryName,
+                UsersUserId = category.UsersUserId,
+            };
+            if (categoryViewModel == null)
+            {
+                return null;
+            }
+            return categoryViewModel;
+        }
 
         public List<Category> GetAllFiltered(string email, string search)
         {
@@ -33,7 +53,7 @@ namespace NTT_DMS.Service
             var categories = _context.Categories.Where(x => x.Users.UserId == user.UserId).ToList();
             if (!search.IsNullOrEmpty())
             {
-                return categories.Where(o => o.CategoryName.Contains(search)).ToList();
+                return categories.Where(o => o.CategoryName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             _context.CustomLogAction(email, "Get Category", "Category", "*ALL");
             return categories;
@@ -57,6 +77,27 @@ namespace NTT_DMS.Service
             try
             {
                 _context.Categories.Add(item);
+                await _context.SaveChangesAsync(email);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var exp = ex;
+                return false;
+            }
+        }
+
+        [HttpPost]
+        public async Task<bool> UpdateCategory(CategoryViewModel category, string email)
+        {
+            if (category == null)
+            {
+                return false;
+            }
+            var cat = _context.Categories.FirstOrDefault(x => x.CategoryId == category.CategoryId && x.UsersUserId == category.UsersUserId);
+            try
+            {
+                cat.CategoryName = category.CategoryName;
                 await _context.SaveChangesAsync(email);
                 return true;
             }

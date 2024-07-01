@@ -50,19 +50,19 @@ namespace NTT_DMS.Controllers
                     return RedirectToAction("Index", "Auth");
                 }
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, _user[0].UserName.ToString()));
-                identity.AddClaim(new Claim(ClaimTypes.Role, _user[0].UserRole));
-                identity.AddClaim(new Claim(ClaimTypes.Email, _user[0].UserEmail));
-                HttpContext.Session.SetString("UserEmail", _user[0].UserEmail);
-                HttpContext.Session.SetInt32("UserId", _user[0].UserId);
+                identity.AddClaim(new Claim(ClaimTypes.Name, _user.UserName.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.Role, _user.UserRole));
+                identity.AddClaim(new Claim(ClaimTypes.Email, _user.UserEmail));
+                HttpContext.Session.SetString("UserEmail", _user.UserEmail);
+                HttpContext.Session.SetInt32("UserId", _user.UserId);
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-                if (_user[0].UserRole == "Admin")
+                if (_user.UserRole == "Admin")
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
                     return RedirectToAction("Index", "Document");
                 }
-                else if (_user[0].UserRole == "User")
+                else if (_user.UserRole == "User")
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, "User"));
                     return RedirectToAction("Index", "Document");
@@ -107,22 +107,19 @@ namespace NTT_DMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Signup(User user)
         {
-            if (ModelState.IsValid)
+            var status = await _authService.Signup(user);
+            if (status)
             {
-                var status = await _authService.Signup(user);
-                if (status)
-                {
-                    TempData["success"] = "Account created successfully!";
-                    return RedirectToAction("Index", "Auth");
-                }
-                else
-                {
-                    TempData["error"] = "An error occurred while creating user.";
-                    return RedirectToAction("Signup", "Auth");
-                }
+                TempData["success"] = "Account created successfully!";
+                return RedirectToAction("Index", "Auth");
             }
-            TempData["error"] = "An error occurred while creating user.";
-            return View();
+            else
+            {
+                TempData["error"] = "An error occurred while creating user.";
+                return RedirectToAction("Signup", "Auth");
+            }
+            //TempData["error"] = "An error occurred while creating user.";
+            //return View();
         }
 
         public IActionResult Forbidden()

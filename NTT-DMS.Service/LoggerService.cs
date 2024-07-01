@@ -24,16 +24,16 @@ namespace NTT_DMS.Service
             if (!string.IsNullOrEmpty(str))
             {
                 var searchedItems = _logs
-            .Where(x => x.LogID.ToString().Contains(str)
-                     || x.NewValue.Contains(str)
-                     || x.OriginalValue.Contains(str)
-                     || x.EventType.Contains(str)
-                     || x.RecordID.Contains(str)
-                     || x.TableName.Contains(str)
-                     || x.ActionID.Contains(str)
-                     || x.ColumnName.Contains(str)
-                     || x.Created_by.Contains(str)
-                     || x.Created_date.ToString().Contains(str))
+            .Where(x => x.LogID.ToString().Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.NewValue.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.OriginalValue.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.EventType.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.RecordID.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.TableName.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.ActionID.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.ColumnName.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.Created_by.Contains(str, StringComparison.OrdinalIgnoreCase)
+                     || x.Created_date.ToString().Contains(str, StringComparison.OrdinalIgnoreCase))
             .OrderByDescending(x => x.Created_date)
             .ToList();
                 return searchedItems;

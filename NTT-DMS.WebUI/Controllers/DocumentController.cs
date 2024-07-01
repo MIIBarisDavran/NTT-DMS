@@ -162,8 +162,8 @@ namespace NTT_DMS.Controllers
             var status = _documentService.Delete(documentIds);
             if(status)
             {
-                ViewBag.success = "Selected documents were successfully deleted.";
-                TempData["Error"] = null;
+                //ViewBag.success = "Selected documents were successfully deleted.";
+                TempData["success"] = "Selected documents were successfully deleted.";
             } else
             {
                 TempData["Error"] = "An error occurred while deleting the documents.";
