@@ -89,7 +89,7 @@ namespace NTT_DMS.Controllers
                 TempData["error"] = "Something went wrong.";
 
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         /*
