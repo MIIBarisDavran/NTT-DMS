@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using NTT_DMS.Data;
+using NTT_DMS.Data.DbInitializer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using ReflectionIT.Mvc.Paging;
 using NTT_DMS.Service;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace NTT_DMS.WebUI
 {
@@ -64,6 +66,9 @@ namespace NTT_DMS.WebUI
             services.AddScoped<CategoryService>();
             services.AddScoped<DirectoryService>();
             services.AddScoped<IChangeLogger, ChangeLogger>();
+            // Register IDbInitializer
+            services.AddScoped<IDbInitializer, DbInitializer>();
+
 
             services.AddMvc();
             services.AddPaging();
@@ -111,6 +116,7 @@ namespace NTT_DMS.WebUI
             app.UseAuthorization();
 
             app.UseSession();
+            SeedDatabase(app);
 
             app.UseEndpoints(endpoints =>
             {
@@ -118,6 +124,16 @@ namespace NTT_DMS.WebUI
                     name: "default",
                     pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
+        
+        }
+
+        public void SeedDatabase(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbInitializer =  scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                dbInitializer.Initialize();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace NTT_DMS.WebUI.Controllers
         }
 
         [HttpGet]
-        [Route("api/directory/tree")]
+        //[Route("api/directory/tree")]
         public IActionResult GetDirectoryTree()
         {
             var directoryTree = _directoryService.GetDirectoryTree();

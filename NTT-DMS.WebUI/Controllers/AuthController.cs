@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using NTT_DMS.Models;
 using NTT_DMS.Data;
 using NTT_DMS.Service;
 
@@ -131,11 +130,11 @@ namespace NTT_DMS.Controllers
         /*
          * ERROR PAGE
          */
-        public IActionResult Error()
-        {
-            var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            _logger.LogError($"Request ID: {requestId}");
-            return View(new ErrorViewModel { RequestId = requestId });
-        }
+        //public IActionResult Error()
+        //{
+        //    var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        //    _logger.LogError($"Request ID: {requestId}");
+        //    return View(new ErrorViewModel { RequestId = requestId });
+        //}
     }
 }
