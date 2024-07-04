@@ -31,6 +31,7 @@ namespace NTT_DMS.Service
                 var result = _passwordHasher.VerifyHashedPassword(_user, _user.password, user.password);
                 if (result == PasswordVerificationResult.Success)
                 {
+                    _context.CustomLogAction(_user.UserEmail, "Login", "User", "Email");
                     return _user;
                 }
             }
