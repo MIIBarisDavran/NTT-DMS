@@ -255,7 +255,7 @@ namespace NTT_DMS.Service
             {
                 {"status", true}
             };
-            if (file == null || file.Length == 0 || file.Length > 4000000)
+            if (file == null || file.Length == 0 || file.Length > 40000000)
             {
                 response = new Dictionary<string, bool>
                 {

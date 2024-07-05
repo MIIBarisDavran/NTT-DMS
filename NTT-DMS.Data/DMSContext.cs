@@ -67,6 +67,10 @@ namespace NTT_DMS.Data
 
         public void CustomLogAction(string userEmail, string eventType, string tableName, string ColumnName)
         {
+            var utcNow = DateTime.UtcNow;
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"); // UTC+3
+            var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, timeZone);
+
             var log = new Log
             {
                 LogID = Guid.NewGuid(),
@@ -78,7 +82,7 @@ namespace NTT_DMS.Data
                 OriginalValue = "",
                 NewValue = "",
                 Created_by = userEmail,
-                Created_date = DateTime.Now
+                Created_date = localTime
             };
 
             Logs.Add(log);

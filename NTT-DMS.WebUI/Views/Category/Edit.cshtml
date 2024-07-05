@@ -36,9 +36,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col" hidden="hidden">
-                    <input asp-for="CategoryId" class="form-control" value="@Model.CategoryId" placeholder="" />
-                </div>
-                <div class="col" hidden="hidden">
+                    @Html.HiddenFor(model => model.CategoryId)
                     <input asp-for="UsersUserId" class="form-control" value="@Model.UsersUserId" placeholder="" />
                 </div>
                 <div class="col">
