@@ -12,23 +12,23 @@ namespace NTT_DMS.Data
     public static class IFormFileExtensions
     {
         public static string GetFilename(this IFormFile file)
-    {
-        return Path.GetFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString().Trim('"'));
-    }
+        {
+            return Path.GetFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString().Trim('"'));
+        }
 
-    public static async Task<MemoryStream> GetFileStream(this IFormFile file)
-    {
-        var filestream = new MemoryStream();
-        await file.CopyToAsync(filestream);
-        filestream.Position = 0;
-        return filestream;
-    }
+        public static async Task<MemoryStream> GetFileStream(this IFormFile file)
+        {
+            var filestream = new MemoryStream();
+            await file.CopyToAsync(filestream);
+            filestream.Position = 0;
+            return filestream;
+        }
 
-    public static async Task<byte[]> GetFileArray(this IFormFile file)
-    {
-        await using var filestream = new MemoryStream();
-        await file.CopyToAsync(filestream);
-        return filestream.ToArray();
-    }
+        public static async Task<byte[]> GetFileArray(this IFormFile file)
+        {
+            await using var filestream = new MemoryStream();
+            await file.CopyToAsync(filestream);
+            return filestream.ToArray();
+        }
     }
 }
